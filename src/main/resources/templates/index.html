@@ -6,10 +6,25 @@
 </head>
 <body>
     <div th:replace="fragments/bodyHeader :: bodyHeader" />
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">Board</a>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">회원 가입</a>
+                </li>
+            </ul>
+            <form class="form-inline my-2 my-lg-0">
+                <a href="#" class="btn btn-primary my-2 my-sm-0 float-right" role="button" aria-pressed="true">로그인</a>
+            </form>
+        </div>
+    </nav>
     <h1>Board</h1>
     <div class="container">
     <table class="table table-hover">
-        <a href="#" class="btn btn-outline-info btn-link btn-sm float-right" role="button" aria-pressed="true">로그인</a>
+
         <thead>
         <tr>
             <th scope="col">글 번호</th>
@@ -27,7 +42,7 @@
             <td th:text="#{post.view">조회수</td>
             <td th:text="#{post.recommend">추천</td>
         </tr>
-        <a href="#" class="btn btn-secondary btn-sm active float-left" role="button" aria-pressed="true">글 쓰기</a>
+        <a href="#" class="btn btn-secondary btn-sm active float-right" role="button" aria-pressed="true">글 쓰기</a>
         </thead>
     </table>
     </div>
