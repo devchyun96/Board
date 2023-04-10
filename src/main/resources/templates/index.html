@@ -8,19 +8,49 @@
     <div th:replace="fragments/bodyHeader :: bodyHeader" />
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <a class="navbar-brand" href="#">Board</a>
-        </button>
-
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto">
+        <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+            <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link" href="#">회원 가입</a>
+                    <button class="btn btn-link" data-bs-toggle="modal" data-target="#modal2" data-bs-whatever="@user">회원 가입</button>
+                </li>
+                <li class="nav-item">
+                    <button class="btn btn-link " data-bs-toggle="modal" data-target="#modal1" data-bs-whatever="@user">로그인</button>
                 </li>
             </ul>
-            <form class="form-inline my-2 my-lg-0">
-                <a href="#" class="btn btn-primary my-2 my-sm-0 float-right" role="button" aria-pressed="true">로그인</a>
-            </form>
+            <div id="btnWrap">
+            </div>
         </div>
     </nav>
+    <div class="modal fade" id="modal1" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalLabel">로그인</h5>
+                    <button class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="recipient-name" class="col-form-label">아이디</label>
+                            <input type="text" class="form-control" id="recipient-name">
+                        </div>
+                        <div class="form-group">
+                            <label for="recipient-password" class="col-form-label">비밀번호</label>
+                            <input type="text" class="form-control" id="recipient-password">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary">로그인</button>
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-target="#modal3" data-bs-whatever="@user">회원 가입</button>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
     <h1>Board</h1>
     <div class="container">
     <table class="table table-hover">
@@ -36,11 +66,11 @@
         </tr>
         <tr th:each="post: ${posts}">
             <td th:text="#{post.id}"></td>
-            <td><a th:href="#{post.title"></a></td>
-            <td th:text="#{post.author">작성자</td>
-            <td th:text="#{post.createdDate">작성일자</td>
-            <td th:text="#{post.view">조회수</td>
-            <td th:text="#{post.recommend">추천</td>
+            <td><a th:href="#{post.title}"></a></td>
+            <td th:text="#{post.author}">작성자</td>
+            <td th:text="#{post.createdDate}">작성일자</td>
+            <td th:text="#{post.view}">조회수</td>
+            <td th:text="#{post.recommend}">추천</td>
         </tr>
         <a href="#" class="btn btn-secondary btn-sm active float-right" role="button" aria-pressed="true">글 쓰기</a>
         </thead>
