@@ -33,4 +33,11 @@ public class IndexController {
 
         return "posts/postsUpdate";
     }
+
+    @GetMapping("/posts/view/{id}")
+    public String view(@PathVariable Long id,Model model){
+        PostsResponseDto dto=postsService.findById(id);
+        postsService.updateView(id);
+        return "posts/postsView";
+    }
 }

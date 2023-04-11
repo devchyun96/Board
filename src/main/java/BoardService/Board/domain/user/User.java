@@ -2,9 +2,12 @@ package BoardService.Board.domain.user;
 
 
 import BoardService.Board.domain.BaseTimeEntity;
+import BoardService.Board.domain.posts.Posts;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -31,6 +34,9 @@ public class User extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Role role;
+
+    @OneToMany(mappedBy = "user")
+    private List<Posts> posts=new ArrayList<>();
 
     public void userUpdate(String nickname,String password)
     {

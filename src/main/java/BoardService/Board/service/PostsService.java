@@ -53,4 +53,12 @@ public class PostsService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
+    public long updateView(Long id){
+        return postsRepository.updateView(id);
+    }
+
+    public List<Posts> findByUsername(String username){
+        return postsRepository.findByUsername(username);
+    }
 }

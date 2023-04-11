@@ -2,6 +2,7 @@ package BoardService.Board.repository.postsrepository;
 
 import BoardService.Board.domain.posts.Posts;
 import BoardService.Board.domain.posts.QPosts;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 
@@ -21,5 +22,14 @@ public class PostsRepositoryCustomImpl implements PostsRepositoryCustom{
                 .orderBy(posts.id.desc())
                 .fetch();
         return list;
+    }
+
+    @Override
+    public long updateView(Long id) {
+        long addView = queryFactory
+                .update(posts)
+                .set(posts.view, posts.view.add(1))
+                .execute();
+        return addView;
     }
 }

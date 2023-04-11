@@ -2,12 +2,10 @@ package BoardService.Board.domain.posts;
 
 
 import BoardService.Board.domain.BaseTimeEntity;
+import BoardService.Board.domain.user.User;
 import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
@@ -27,10 +25,15 @@ public class Posts extends BaseTimeEntity {
 
     private String author;
 
+    @Column(columnDefinition = "default 0")
     private int recommend;
 
-    @Column(nullable = false)
+    @Column(columnDefinition = "default 0")
     private int view;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 
 
 
