@@ -1,13 +1,12 @@
 package BoardService.Board.controller;
 
 import BoardService.Board.dto.postsdto.PostsResponseDto;
+import BoardService.Board.dto.postsdto.PostsSaveDto;
 import BoardService.Board.service.PostsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequiredArgsConstructor
@@ -23,7 +22,9 @@ public class IndexController {
     }
 
     @GetMapping("/posts/save")
-    public String postsSave(){
+    public String postsSave(@ModelAttribute("save")PostsSaveDto save,Model model){
+        model.addAttribute("form",postsService.save(save));
+
         return "posts/postsSave";
     }
 

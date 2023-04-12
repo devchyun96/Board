@@ -26,26 +26,28 @@ public class Posts extends BaseTimeEntity {
     private String author;
 
     @Column(columnDefinition = "Integer default 0")
-    private int recommend;
-
-    @Column(columnDefinition = "Integer default 0")
     private int view;
 
+    @Column(columnDefinition = "Integer default 0")
+    private int recommend;
+
+
+
+
+
     @Builder
-    public Posts(String title, String content, String author, int recommend, int view) {
+    public Posts(String title, String content, String author,int view,int recommend) {
         this.title = title;
         this.content = content;
         this.author = author;
-        this.recommend = recommend;
-        this.view = view;
-
+        this.view=view;
+        this.recommend=recommend;
     }
 
-    public void update(String title, String content,int view,int recommend)
+    public void update(String title, String content)
     {
         this.title=title;
         this.content=content;
-        this.view=view;
-        this.recommend=recommend;
+
     }
 }

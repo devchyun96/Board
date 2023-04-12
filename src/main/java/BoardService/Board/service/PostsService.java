@@ -28,7 +28,7 @@ public class PostsService {
     public Long update(Long id, PostsUpdateDto dto){
         Posts posts = postsRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다 id=" + id));
-        posts.update(dto.getTitle(),dto.getContent(),dto.getView(), dto.getRecommend());
+        posts.update(dto.getTitle(),dto.getContent());
 
         return id;
     }
