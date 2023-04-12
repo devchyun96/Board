@@ -36,8 +36,4 @@ public class PostsApiController {
         return postsService.findById(id);
     }
 
-    @GetMapping("/api/v1/posts/{id}")
-    public List<Posts> findByUsername(@PathVariable String username) {
-        return postsService.findByUsername(username);
-    }
 }

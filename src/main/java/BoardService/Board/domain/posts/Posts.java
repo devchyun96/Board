@@ -25,17 +25,11 @@ public class Posts extends BaseTimeEntity {
 
     private String author;
 
-    @Column(columnDefinition = "default 0")
+    @Column(columnDefinition = "Integer default 0")
     private int recommend;
 
-    @Column(columnDefinition = "default 0")
+    @Column(columnDefinition = "Integer default 0")
     private int view;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
-
-
 
     @Builder
     public Posts(String title, String content, String author, int recommend, int view) {

@@ -14,9 +14,11 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
+@Table(name = "users")
 public class User extends BaseTimeEntity {
 
     @Id @GeneratedValue
+    @Column(name = "user_id")
     private Long id;
 
     @Column(nullable = false,unique = true,length = 100) //user id
@@ -34,9 +36,6 @@ public class User extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Role role;
-
-    @OneToMany(mappedBy = "user")
-    private List<Posts> posts=new ArrayList<>();
 
     public void userUpdate(String nickname,String password)
     {

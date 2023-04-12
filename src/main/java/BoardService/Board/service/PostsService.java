@@ -58,7 +58,4 @@ public class PostsService {
         return postsRepository.updateView(id);
     }
 
-    public List<Posts> findByUsername(String username){
-        return postsRepository.findByUsername(username);
-    }
 }
