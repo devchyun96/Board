@@ -5,18 +5,20 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.criteria.CriteriaBuilder;
+
 @Getter
 @NoArgsConstructor
 public class PostsUpdateDto {
     private String title;
     private String content;
 
-    private int view;
+    private Integer view;
 
-    private int recommend;
+    private Integer recommend;
 
     @Builder
-    public PostsUpdateDto(String title, String content,int view, int recommend) {
+    public PostsUpdateDto(String title, String content, Integer view, Integer recommend) {
         this.title = title;
         this.content = content;
         this.view=view;

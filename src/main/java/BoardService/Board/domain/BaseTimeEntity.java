@@ -18,19 +18,11 @@ public abstract class BaseTimeEntity {
 
     @CreatedDate
     @Column(name = "created_Date")
-    private String createdDate ;
+    private LocalDateTime createdDate ;
 
     @LastModifiedBy
     @Column(name = "modified_Date")
-    private String modifiedDate;
+    private LocalDateTime modifiedDate;
 
-    @PrePersist
-    public void PrePersist(){
-        this.createdDate= LocalDate.now().format(DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT));
-        this.modifiedDate=this.createdDate;
-    }
-    @PreUpdate
-    public void PreUpdate(){
-        this.modifiedDate=LocalDate.now().format(DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT));
-    }
+
 }

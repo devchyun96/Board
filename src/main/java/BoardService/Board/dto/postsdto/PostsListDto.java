@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Getter
 @NoArgsConstructor
 public class PostsListDto {
@@ -12,7 +14,7 @@ public class PostsListDto {
     private Long id;
     private String title;
     private String author;
-    private int modifiedDate;
+    private String modifiedDate;
 
     public PostsListDto(Posts entity) {
         this.id =entity.getId();

@@ -1,11 +1,4 @@
-<!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragments/header :: header">
-    <title>Board </title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-</head>
-<body>
-    <div th:replace="fragments/bodyHeader :: bodyHeader" />
+{{>layout/header}}
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <a class="navbar-brand" href="#">Board</a>
         <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
@@ -33,16 +26,23 @@
             <th scope="col">조회수</th>
             <th scope="col">추천</th>
         </tr>
-        <tr th:each="post: ${posts}">
-            <td th:text="#{post.id}"></td>
-            <td><a th:href="#{post.title}"></a></td>
-            <td th:text="#{post.author}">작성자</td>
-            <td th:text="#{post.createdDate}">작성일자</td>
-            <td th:text="#{post.view}">조회수</td>
-            <td th:text="#{post.recommend}">추천</td>
-        </tr>
-        <a href="/posts/save" class="btn btn-primary btn-sm active float-right" role="button" aria-pressed="true">글 쓰기</a>
         </thead>
+        <tbody id="tbody">
+        {{#posts}}
+        <tr>
+            <td ></td>
+            <td>><a href="/posts/update/{{id}}">{{title}}</a></td>
+            <td >{{author}}</td>
+            <td >{{modifiedDate}}</td>
+            <td >{{view}}</td>
+            <td >{{recommend}}</td>
+        </tr>
+        {{/posts}}
+        <a href="/posts/save" class="btn btn-primary btn-sm active float-right" role="button" aria-pressed="true">글 쓰기</a>
+        {{#userName}}
+            <span id="user">{{userName}}</span>
+        {{/userName}}
+        </tbody>
     </table>
     </div>
     <div>
@@ -74,6 +74,4 @@
         <input type="text" class="form-control" aria-label="Text input">
             <a href="#" class="btn btn-outline-secondary float-right" role="button" aria-pressed="true">search</a>
     </div>
-    <div th:replace="fragments/footer :: footer" />
-</body>
-</html>
+{{>layout/footer}}

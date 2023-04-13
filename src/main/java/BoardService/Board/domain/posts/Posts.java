@@ -14,7 +14,6 @@ import java.time.LocalDateTime;
 public class Posts extends BaseTimeEntity {
 
     @Id @GeneratedValue
-    @Column(name="posts_id")
     private Long id;
 
     @Column(length = 500,nullable = false)
@@ -26,17 +25,17 @@ public class Posts extends BaseTimeEntity {
     private String author;
 
     @Column(columnDefinition = "Integer default 0")
-    private int view;
+    private Integer view;
 
     @Column(columnDefinition = "Integer default 0")
-    private int recommend;
+    private Integer recommend;
 
 
 
 
 
     @Builder
-    public Posts(String title, String content, String author,int view,int recommend) {
+    public Posts(String title, String content, String author,Integer view,Integer recommend) {
         this.title = title;
         this.content = content;
         this.author = author;

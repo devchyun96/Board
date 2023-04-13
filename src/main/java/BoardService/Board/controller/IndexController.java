@@ -15,16 +15,14 @@ public class IndexController {
     private final PostsService postsService;
 
     @GetMapping("/")
-    public String home(Model model){
+    public String index( Model model){
         model.addAttribute("posts",postsService.findAllDesc());
 
         return "index";
     }
 
     @GetMapping("/posts/save")
-    public String postsSave(@ModelAttribute("save")PostsSaveDto save,Model model){
-        model.addAttribute("form",postsService.save(save));
-
+    public String postsSave(Model model){
         return "posts/postsSave";
     }
 

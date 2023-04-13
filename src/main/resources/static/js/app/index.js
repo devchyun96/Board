@@ -21,7 +21,6 @@ var main = {
             createdDate: $('#createdDate').val()
             view: $('#view').val()
             recommend: $('#recommend').val()
-
         };
 
         $.ajax({

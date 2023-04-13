@@ -37,10 +37,14 @@ public class User extends BaseTimeEntity {
     @Column(nullable = false)
     private Role role;
 
-    public void userUpdate(String nickname,String password)
+    public User userUpdate(String nickname,String password)
     {
         this.nickname=nickname;
         this.password=password;
+        return this;
     }
 
+    public String getRoleKey(){
+        return this.role.getKey();
+    }
 }

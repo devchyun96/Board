@@ -11,5 +11,4 @@ import java.util.List;
 
 public interface PostsRepository extends JpaRepository<Posts,Long> ,PostsRepositoryCustom{
 
-    List<Posts> findAllDesc();
 }
