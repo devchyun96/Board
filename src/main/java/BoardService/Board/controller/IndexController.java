@@ -15,7 +15,7 @@ public class IndexController {
     private final PostsService postsService;
 
     @GetMapping("/")
-    public String index( Model model){
+    public String index(Model model){
         model.addAttribute("posts",postsService.findAllDesc());
 
         return "index";
@@ -23,7 +23,7 @@ public class IndexController {
 
     @GetMapping("/posts/save")
     public String postsSave(Model model){
-        return "posts/postsSave";
+        return "posts/posts-save";
     }
 
     @GetMapping("/posts/update/{id}")
@@ -31,7 +31,7 @@ public class IndexController {
         PostsResponseDto dto=postsService.findById(id);
         model.addAttribute("post",dto);
 
-        return "posts/postsUpdate";
+        return "posts/post-update";
     }
 
 }

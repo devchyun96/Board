@@ -1,13 +1,9 @@
-package BoardService.Board.domain.user;
+package BoardService.Board.domain;
 
 
-import BoardService.Board.domain.BaseTimeEntity;
-import BoardService.Board.domain.posts.Posts;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Getter
@@ -17,8 +13,7 @@ import java.util.List;
 @Table(name = "users")
 public class User extends BaseTimeEntity {
 
-    @Id @GeneratedValue
-    @Column(name = "user_id")
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false,unique = true,length = 100) //user id

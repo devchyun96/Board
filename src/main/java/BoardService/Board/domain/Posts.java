@@ -1,19 +1,16 @@
-package BoardService.Board.domain.posts;
+package BoardService.Board.domain;
 
 
-import BoardService.Board.domain.BaseTimeEntity;
-import BoardService.Board.domain.user.User;
 import lombok.*;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Posts extends BaseTimeEntity {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(length = 500,nullable = false)
@@ -24,18 +21,15 @@ public class Posts extends BaseTimeEntity {
 
     private String author;
 
-    @Column(columnDefinition = "Integer default 0")
-    private Integer view;
+    @Column(columnDefinition = "Integer default 0",nullable = false)
+    private int view;
 
-    @Column(columnDefinition = "Integer default 0")
-    private Integer recommend;
-
-
-
+    @Column(columnDefinition = "Integer default 0",nullable = false)
+    private int recommend;
 
 
     @Builder
-    public Posts(String title, String content, String author,Integer view,Integer recommend) {
+    public Posts(String title, String content, String author,int view,int recommend) {
         this.title = title;
         this.content = content;
         this.author = author;

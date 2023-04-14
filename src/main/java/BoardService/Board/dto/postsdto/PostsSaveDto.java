@@ -1,29 +1,30 @@
 package BoardService.Board.dto.postsdto;
 
 
-import BoardService.Board.domain.posts.Posts;
+import BoardService.Board.domain.Posts;
 import lombok.*;
 
-import java.time.LocalDateTime;
-
 @Getter
-
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 public class PostsSaveDto {
-
-
     private String title;
     private String content;
     private String author;
 
+    private int view;
 
+    private int recommend;
 
+    private String createdDate;
 
     @Builder
-    public PostsSaveDto(Long id, String title, String content, String author) {
+    public PostsSaveDto(String title, String content, String author,int view,int recommend,String createdDate) {
         this.title = title;
         this.content = content;
         this.author = author;
+        this.view=view;
+        this.recommend=recommend;
+        this.createdDate=createdDate;
     }
 
     public Posts toEntity(){
@@ -31,6 +32,8 @@ public class PostsSaveDto {
                 .title(title)
                 .content(content)
                 .author(author)
+                .view(0)
+                .recommend(0)
                 .build();
     }
 }

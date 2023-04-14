@@ -1,4 +1,4 @@
-package BoardService.Board.domain.user;
+package BoardService.Board.domain;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

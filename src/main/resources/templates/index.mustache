@@ -1,77 +1,30 @@
 {{>layout/header}}
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="#">Board</a>
-        <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <button class="btn btn-link">회원 가입</button>
-                </li>
-                <li class="nav-item">
-                    <button class="btn btn-link">로그인</button>
-                </li>
-            </ul>
-            <div id="btnWrap">
-            </div>
-        </div>
-    </nav>
     <h1>Board</h1>
     <div class="container">
     <table class="table table-hover">
+        <a href="/posts/save" class="btn btn-primary btn-sm active float-right" role="button" aria-pressed="true">글 쓰기</a>
         <thead>
         <tr>
             <th scope="col">글 번호</th>
             <th scope="col">제목</th>
             <th scope="col">작성자</th>
-            <th scope="col">작성일자</th>
             <th scope="col">조회수</th>
             <th scope="col">추천</th>
+            <th scope="col">작성 일자</th>
         </tr>
         </thead>
         <tbody id="tbody">
         {{#posts}}
         <tr>
-            <td ></td>
-            <td>><a href="/posts/update/{{id}}">{{title}}</a></td>
-            <td >{{author}}</td>
-            <td >{{modifiedDate}}</td>
-            <td >{{view}}</td>
-            <td >{{recommend}}</td>
+            <td>{{id}}</td>
+            <td><a href="/posts/update/{{id}}">{{title}}</a></td>
+            <td>{{author}}</td>
+            <td>{{view}}</td>
+            <td>{{recommend}}</td>
+            <td>{{createdDate}}</td>
         </tr>
         {{/posts}}
-        <a href="/posts/save" class="btn btn-primary btn-sm active float-right" role="button" aria-pressed="true">글 쓰기</a>
-        {{#userName}}
-            <span id="user">{{userName}}</span>
-        {{/userName}}
         </tbody>
     </table>
-    </div>
-    <div>
-        <ul class="pagination pagination-sm">
-            <li class="page-item disabled">
-                <a class="page-link" href="#">&laquo;</a>
-            </li>
-            <li class="page-item active">
-                <a class="page-link" href="#">1</a>
-            </li>
-            <li class="page-item">
-                <a class="page-link" href="#">2</a>
-            </li>
-            <li class="page-item">
-                <a class="page-link" href="#">3</a>
-            </li>
-            <li class="page-item">
-                <a class="page-link" href="#">4</a>
-            </li>
-            <li class="page-item">
-                <a class="page-link" href="#">5</a>
-            </li>
-            <li class="page-item">
-                <a class="page-link" href="#">&raquo;</a>
-            </li>
-        </ul>
-    </div>
-    <div class="input-group">
-        <input type="text" class="form-control" aria-label="Text input">
-            <a href="#" class="btn btn-outline-secondary float-right" role="button" aria-pressed="true">search</a>
     </div>
 {{>layout/footer}}

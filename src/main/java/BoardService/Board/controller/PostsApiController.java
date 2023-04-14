@@ -1,14 +1,11 @@
 package BoardService.Board.controller;
 
-import BoardService.Board.domain.posts.Posts;
 import BoardService.Board.dto.postsdto.PostsResponseDto;
 import BoardService.Board.dto.postsdto.PostsSaveDto;
 import BoardService.Board.dto.postsdto.PostsUpdateDto;
 import BoardService.Board.service.PostsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -24,7 +21,6 @@ public class PostsApiController {
     public Long update(@PathVariable Long id, @RequestBody PostsUpdateDto dto){
         return postsService.update(id,dto);
     }
-
     @DeleteMapping("/api/v1/posts/{id}")
     public Long delete(@PathVariable Long id) {
         postsService.delete(id);

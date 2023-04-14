@@ -18,9 +18,6 @@ var main = {
             title: $('#title').val(),
             author: $('#author').val(),
             content: $('#content').val()
-            createdDate: $('#createdDate').val()
-            view: $('#view').val()
-            recommend: $('#recommend').val()
         };
 
         $.ajax({
@@ -40,8 +37,6 @@ var main = {
         var data = {
             title: $('#title').val(),
             content: $('#content').val()
-            view: $('#view').val()
-            recommend: $('#recommend').val()
         };
 
         var id = $('#id').val();

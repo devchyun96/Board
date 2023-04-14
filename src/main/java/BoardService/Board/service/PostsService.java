@@ -1,6 +1,6 @@
 package BoardService.Board.service;
 
-import BoardService.Board.domain.posts.Posts;
+import BoardService.Board.domain.Posts;
 import BoardService.Board.dto.postsdto.PostsListDto;
 import BoardService.Board.dto.postsdto.PostsResponseDto;
 import BoardService.Board.dto.postsdto.PostsSaveDto;
@@ -48,14 +48,12 @@ public class PostsService {
 
     @Transactional(readOnly = true)
     public List<PostsListDto> findAllDesc(){
-        return postsRepository.findAllDesc().stream()
+        return postsRepository.findAllDesc()
+                .stream()
                 .map(PostsListDto::new)
                 .collect(Collectors.toList());
     }
 
-    @Transactional
-    public long updateView(Long id){
-        return postsRepository.updateView(id);
-    }
+
 
 }

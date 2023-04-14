@@ -1,6 +1,6 @@
 package BoardService.Board.repository.postsrepository;
 
-import BoardService.Board.domain.posts.Posts;
+import BoardService.Board.domain.Posts;
 import org.springframework.data.jpa.repository.Modifying;
 
 import java.util.List;

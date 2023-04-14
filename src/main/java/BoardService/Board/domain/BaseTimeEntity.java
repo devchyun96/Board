@@ -17,12 +17,20 @@ import java.time.format.FormatStyle;
 public abstract class BaseTimeEntity {
 
     @CreatedDate
-    @Column(name = "created_Date")
-    private LocalDateTime createdDate ;
-
+    @Column(name = "created_date",nullable = false)
+    private String createdDate;
     @LastModifiedBy
-    @Column(name = "modified_Date")
-    private LocalDateTime modifiedDate;
+    @Column(name = "modified_date",nullable = false)
+    private String modifiedDate ;
 
+    @PrePersist
+    public void onPrePersist(){
+        this.createdDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy.MM.dd"));
+        this.modifiedDate = this.createdDate;
+    }
+    @PreUpdate
+    public void onPreUpdate(){
+        this.modifiedDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm"));
+    }
 
 }
