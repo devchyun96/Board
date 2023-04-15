@@ -1,30 +1,31 @@
 {{>layout/header}}
-    <h1>Board</h1>
-    <div class="container">
-    <table class="table table-hover">
-        <a href="/posts/save" class="btn btn-primary btn-sm active float-right" role="button" aria-pressed="true">글 쓰기</a>
-        <thead>
-        <tr>
-            <th scope="col">글 번호</th>
-            <th scope="col">제목</th>
-            <th scope="col">작성자</th>
-            <th scope="col">조회수</th>
-            <th scope="col">추천</th>
-            <th scope="col">작성 일자</th>
-        </tr>
-        </thead>
-        <tbody id="tbody">
-        {{#posts}}
-        <tr>
-            <td>{{id}}</td>
-            <td><a href="/posts/update/{{id}}">{{title}}</a></td>
-            <td>{{author}}</td>
-            <td>{{view}}</td>
-            <td>{{recommend}}</td>
-            <td>{{createdDate}}</td>
-        </tr>
-        {{/posts}}
-        </tbody>
-    </table>
-    </div>
+<h1>Board</h1>
+<div class="container">
+<table class="table table-horizontal">
+    <a href="/posts/save" class="btn btn-primary btn-sm active float-right" role="button" aria-pressed="true">글 쓰기</a>
+    <thead class="thead-strong">
+    <tr>
+        <th scope="col">게시글번호</th>
+        <th scope="col">제목</th>
+        <th scope="col">작성자</th>
+        <th scope="col">조회수</th>
+        <th scope="col">추천</th>
+        <th scope="col">작성일자</th>
+    </tr>
+    </thead>
+    <tbody id="tbody">
+    {{#posts}}
+    <tr>
+        <td>{{id}}</td>
+        <td><a href="/posts/update/{{id}}">{{title}}</a></td>
+        <td>{{author}}</td>
+        <td>{{view}}</td>
+        <td>{{recommend}}</td>
+        <td>{{createdDate}}</td>
+    </tr>
+    {{/posts}}
+    </tbody>
+</table>
+</div>
+
 {{>layout/footer}}

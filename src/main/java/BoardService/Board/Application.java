@@ -8,14 +8,13 @@ import org.springframework.context.annotation.Bean;
 import javax.persistence.EntityManager;
 
 @SpringBootApplication
-public class BoardApplication {
+public class Application {
+    public static void main(String[] args) {
+        SpringApplication.run(Application.class,args);
+    }
 
-	public static void main(String[] args) {
-		SpringApplication.run(BoardApplication.class, args);
-	}
-	@Bean
-	JPAQueryFactory jpaQueryFactory(EntityManager em){
-		return new JPAQueryFactory(em);
-	}
-
+    @Bean
+    JPAQueryFactory jpaQueryFactory(EntityManager em) {
+        return new JPAQueryFactory(em);
+    }
 }
