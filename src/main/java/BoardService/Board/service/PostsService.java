@@ -7,6 +7,8 @@ import BoardService.Board.dto.postsdto.PostsSaveDto;
 import BoardService.Board.dto.postsdto.PostsUpdateDto;
 import BoardService.Board.repository.postsrepository.PostsRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -43,7 +45,7 @@ public class PostsService {
 
     public PostsResponseDto findById(Long id){
         Posts entity = postsRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다 id=" + id));
+                .orElseThrow(() -> new IllegalArgumentException("해당 id가 없습니다 id=" + id));
         return new PostsResponseDto(entity);
     }
 
@@ -54,4 +56,15 @@ public class PostsService {
                 .map(PostsListDto::new)
                 .collect(Collectors.toList());
     }
+
+    @Transactional
+    public int updateView(Long id){
+        return postsRepository.updateView(id);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<Posts> page(Pageable pageable){
+        return postsRepository.findAll(pageable);
+    }
+
 }

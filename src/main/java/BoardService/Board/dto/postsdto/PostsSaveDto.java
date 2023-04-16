@@ -1,34 +1,35 @@
 package BoardService.Board.dto.postsdto;
 
-
-import BoardService.Board.domain.Posts;
-import lombok.*;
+import BoardService.Board.domain.posts.Posts;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
 public class PostsSaveDto {
+
     private String title;
+
     private String content;
+
     private String author;
 
     private int view;
 
     private int recommend;
 
-    private String createdDate;
-
     @Builder
-    public PostsSaveDto(String title, String content, String author,int view,int recommend,String createdDate) {
+    public PostsSaveDto(String title, String content, String author, int view, int recommend) {
         this.title = title;
         this.content = content;
         this.author = author;
-        this.view=view;
-        this.recommend=recommend;
-        this.createdDate=createdDate;
+        this.view = view;
+        this.recommend = recommend;
     }
 
     public Posts toEntity(){
-       return Posts.builder()
+        return Posts.builder()
                 .title(title)
                 .content(content)
                 .author(author)

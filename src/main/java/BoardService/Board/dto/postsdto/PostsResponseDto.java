@@ -1,7 +1,6 @@
 package BoardService.Board.dto.postsdto;
 
-import BoardService.Board.domain.Posts;
-
+import BoardService.Board.domain.posts.Posts;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -11,26 +10,17 @@ public class PostsResponseDto {
 
     private Long id;
     private String title;
-    private String author;
     private String content;
-
+    private String author;
     private int view;
     private int recommend;
 
-    private String createdDate;
-
-    private String modifiedDate;
-
-
-
-    public PostsResponseDto(Posts entity) {
-        this.id = entity.getId();
-        this.title = entity.getTitle();
+    public PostsResponseDto(Posts entity){
+        this.id=entity.getId();
+        this.title=entity.getTitle();
         this.content=entity.getContent();
+        this.author=entity.getAuthor();
         this.view=entity.getView();
         this.recommend=entity.getRecommend();
-        this.author = entity.getAuthor();
-        this.createdDate=entity.getCreatedDate();
-        this.modifiedDate=entity.getModifiedDate();
     }
 }
