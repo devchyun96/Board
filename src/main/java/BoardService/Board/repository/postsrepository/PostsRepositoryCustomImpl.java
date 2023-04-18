@@ -1,7 +1,6 @@
 package BoardService.Board.repository.postsrepository;
 
-import BoardService.Board.domain.posts.Posts;
-import BoardService.Board.domain.posts.QPosts;
+import BoardService.Board.domain.Posts;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 

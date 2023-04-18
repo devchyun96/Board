@@ -1,4 +1,4 @@
-package BoardService.Board.domain.posts;
+package BoardService.Board.domain;
 
 import BoardService.Board.domain.BaseTimeEntity;
 import lombok.AccessLevel;

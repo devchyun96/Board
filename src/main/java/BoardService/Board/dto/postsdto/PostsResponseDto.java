@@ -1,6 +1,6 @@
 package BoardService.Board.dto.postsdto;
 
-import BoardService.Board.domain.posts.Posts;
+import BoardService.Board.domain.Posts;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

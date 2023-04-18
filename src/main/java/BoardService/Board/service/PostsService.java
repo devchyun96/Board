@@ -1,6 +1,6 @@
 package BoardService.Board.service;
 
-import BoardService.Board.domain.posts.Posts;
+import BoardService.Board.domain.Posts;
 import BoardService.Board.dto.postsdto.PostsListDto;
 import BoardService.Board.dto.postsdto.PostsResponseDto;
 import BoardService.Board.dto.postsdto.PostsSaveDto;

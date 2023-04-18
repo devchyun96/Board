@@ -1,6 +1,6 @@
 package BoardService.Board.repository.postsrepository;
 
-import BoardService.Board.domain.posts.Posts;
+import BoardService.Board.domain.Posts;
 
 import java.util.List;
 
