@@ -11,12 +11,19 @@
     <a class="navbar-brand" href="/">Board</a>
     <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
         <ul class="navbar-nav">
+        {{#users}}
+
+        {{/users}}
+            {{^users}}
+                <a href="/oauth2/authorization/google" class="btn btn-success active" role="button">Google Login</a>
+                <a href="/oauth2/authorization/naver" class="btn btn-secondary active" role="button">Naver Login</a>
             <li class="nav-item">
-                <button type="button" class="btn btn-link">회원 가입</button>
+                <a href="/users/userJoin" role="button" class="btn btn-link">회원 가입</a>
             </li>
             <li class="nav-item">
-                <button type="button" class="btn btn-link">로그인</button>
+                <a href="/users/userLogin" role="button" class="btn btn-link">로그인</a>
             </li>
+            {{/users}}
         </ul>
     </div>
 </nav>

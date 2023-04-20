@@ -1,12 +1,14 @@
 package BoardService.Board.repository.postsrepository;
 
 import BoardService.Board.domain.Posts;
+import BoardService.Board.domain.QPosts;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 
-import static BoardService.Board.domain.posts.QPosts.*;
+import static BoardService.Board.domain.QPosts.*;
+
 
 @RequiredArgsConstructor
 public class PostsRepositoryCustomImpl implements PostsRepositoryCustom{
