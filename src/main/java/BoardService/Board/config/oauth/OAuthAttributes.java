@@ -1,4 +1,4 @@
-package BoardService.Board.config.auth.dto;
+package BoardService.Board.config.oauth;
 
 import BoardService.Board.domain.Role;
 import BoardService.Board.domain.User;

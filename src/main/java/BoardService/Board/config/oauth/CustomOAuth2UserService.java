@@ -1,6 +1,5 @@
-package BoardService.Board.config.auth;
+package BoardService.Board.config.oauth;
 
-import BoardService.Board.config.auth.dto.OAuthAttributes;
 import BoardService.Board.domain.User;
 import BoardService.Board.dto.userdto.UserResponseDto;
 import BoardService.Board.repository.userrepository.UserRepository;

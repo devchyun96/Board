@@ -1,5 +1,6 @@
 package BoardService.Board.service;
 
+import BoardService.Board.domain.Role;
 import BoardService.Board.domain.User;
 import BoardService.Board.dto.userdto.UserRequestDto;
 import BoardService.Board.repository.userrepository.UserRepository;
@@ -18,7 +19,7 @@ public class UserService {
     @Transactional
     public void join(UserRequestDto dto){
         dto.setPassword(passwordEncoder.encode(dto.getPassword()));
-
+        dto.setRole(Role.USER);
         userRepository.save(dto.toEntity());
     }
 
