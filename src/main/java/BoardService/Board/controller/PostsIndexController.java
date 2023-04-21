@@ -1,7 +1,10 @@
 package BoardService.Board.controller;
 
+import BoardService.Board.config.auth.LoginUser;
 import BoardService.Board.domain.Posts;
+import BoardService.Board.domain.User;
 import BoardService.Board.dto.postsdto.PostsResponseDto;
+import BoardService.Board.dto.userdto.UserResponseDto;
 import BoardService.Board.service.PostsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -19,9 +22,12 @@ public class PostsIndexController {
     private final PostsService postsService;
 
     @GetMapping("/")
-    public String index(Model model, @PageableDefault(size=10,sort="id",direction = Sort.Direction.DESC)Pageable pageable) {
-
+    public String index(Model model, @PageableDefault(size=10,sort="id",direction = Sort.Direction.DESC)Pageable pageable,
+                        @LoginUser UserResponseDto user) {
         Page<Posts> posts=postsService.page(pageable);
+        if(user!=null){
+            model.addAttribute("user",user);
+        }
         model.addAttribute("posts", posts);
         model.addAttribute("prev", pageable.previousOrFirst().getPageNumber());
         model.addAttribute("next", pageable.next().getPageNumber());

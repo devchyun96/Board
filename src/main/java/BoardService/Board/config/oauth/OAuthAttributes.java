@@ -51,9 +51,9 @@ public class OAuthAttributes {
         Map<String, Object> response = (Map<String, Object>) attributes.get("response");
 
         return OAuthAttributes.builder()
-                .username((String) response.get("name"))
-                .email((String) response.get("email"))
+                .username((String) response.get("username"))
                 .nickname((String) response.get("nickname"))
+                .email((String) response.get("email"))
                 .attributes(response)
                 .nameAttributeKey(userNameAttributeName)
                 .build();
@@ -61,8 +61,8 @@ public class OAuthAttributes {
     public User toEntity() {
         return User.builder()
                 .username(email)
-                .email(email)
                 .nickname(nickname)
+                .email(email)
                 .role(Role.GUEST)
                 .build();
     }
