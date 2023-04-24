@@ -2,13 +2,13 @@ package BoardService.Board.dto.userdto;
 
 import BoardService.Board.domain.Role;
 import BoardService.Board.domain.User;
-import lombok.Data;
+
 import lombok.Getter;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 
-@Data
+
+@Getter
 public class UserResponseDto implements Serializable {
     private String username;
     private String nickname;

@@ -1,7 +1,8 @@
 {{>layout/header}}
 <div class="col-md-12">
     <div class="container col-md-8">
-        <form action="/users/login" method="post">
+        <form action="/auth/loginProc" method="post">
+            <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
             <div class="form-group">
                 <label>아이디</label>
                 <input type="text" class="form-control" name="username" placeholder="아이디를 입력해주세요">
@@ -14,5 +15,4 @@
         </form>
     </div>
 </div>
-
 {{>layout/footer}}

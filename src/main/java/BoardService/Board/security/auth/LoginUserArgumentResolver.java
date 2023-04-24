@@ -1,4 +1,4 @@
-package BoardService.Board.config.auth;
+package BoardService.Board.security.auth;
 
 import BoardService.Board.dto.userdto.UserResponseDto;
 import lombok.RequiredArgsConstructor;

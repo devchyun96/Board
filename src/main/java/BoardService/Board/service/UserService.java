@@ -1,7 +1,5 @@
 package BoardService.Board.service;
 
-import BoardService.Board.domain.Role;
-import BoardService.Board.domain.User;
 import BoardService.Board.dto.userdto.UserRequestDto;
 import BoardService.Board.repository.userrepository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,33 +16,46 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
-
     private final BCryptPasswordEncoder passwordEncoder;
 
     @Transactional
-    public void join(UserRequestDto dto){  //회원 가입
+    public void userJoin(UserRequestDto dto) {
         dto.setPassword(passwordEncoder.encode(dto.getPassword()));
-        dto.setRole(Role.USER);
         userRepository.save(dto.toEntity());
     }
 
-    @Transactional //회원 수정
-    public void userUpdate(UserRequestDto dto){
-        User user = userRepository.findById(dto.toEntity().getId()).orElseThrow(() ->
-                new IllegalArgumentException("해당 회원이 존재하지 않습니다."));
-
-        String encPassword= passwordEncoder.encode(dto.getPassword());
-        user.userUpdate(dto.getNickname(),encPassword);
-    }
-
     @Transactional(readOnly = true)
-    public Map<String, String> validateHandling(Errors errors) { //유효성,중복 검사
-        Map<String, String> validate=new HashMap<>();
+    public Map<String, String> validateHandling(Errors errors) {
+        Map<String,String> validate=new HashMap<>();
 
-        for(FieldError error: errors.getFieldErrors()){
+        for (FieldError error : errors.getFieldErrors()) {
             String validKey=String.format("valid_%s",error.getField());
             validate.put(validKey,error.getDefaultMessage());
+
         }
         return validate;
     }
+    @Transactional(readOnly = true)
+    public void checkUsernameDup(UserRequestDto dto){
+        boolean existsByUsername = userRepository.existsByUsername(dto.toEntity().getUsername());
+        if(existsByUsername){
+            throw new IllegalStateException("같은 아이디가 존재합니다.");
+        }
+    }
+
+    @Transactional(readOnly = true)
+    public void checkNicknameDup(UserRequestDto dto){
+        boolean existsByNickname = userRepository.existsByNickname(dto.toEntity().getNickname());
+        if(existsByNickname){
+            throw new IllegalStateException("같은 닉네임이 존재합니다.");
+        }
+    }
+    @Transactional(readOnly = true)
+    public void checkEmailDup(UserRequestDto dto){
+        boolean existsByEmail = userRepository.existsByEmail(dto.toEntity().getEmail());
+        if(existsByEmail){
+            throw new IllegalStateException("같은 이메일이 존재합니다.");
+        }
+    }
+
 }

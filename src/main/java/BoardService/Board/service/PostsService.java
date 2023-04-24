@@ -67,4 +67,10 @@ public class PostsService {
         return postsRepository.findAll(pageable);
     }
 
+    @Transactional(readOnly = true)
+    public Page<Posts> searchKeyword(String keyword,Pageable pageable){
+        Page<Posts> page = postsRepository.findByTitleContaining(keyword, pageable);
+        return page;
+    }
+
 }

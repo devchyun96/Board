@@ -20,13 +20,13 @@ public class User extends BaseTimeEntity{
     @Column(length = 30,nullable = false,unique = true)
     private String username; //userId
 
-    @Column(length = 40,nullable = false)
+    @Column(length = 100,nullable = false)
     private String password; //password
 
     @Column(length = 30,nullable = false,unique = true)
     private String nickname; // alias
 
-    @Column(nullable = false,unique = true)
+    @Column(nullable = false)
     private String email; //email
 
     @Enumerated(EnumType.STRING)

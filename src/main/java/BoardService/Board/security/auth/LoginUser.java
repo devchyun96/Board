@@ -1,4 +1,4 @@
-package BoardService.Board.config.auth;
+package BoardService.Board.security.auth;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

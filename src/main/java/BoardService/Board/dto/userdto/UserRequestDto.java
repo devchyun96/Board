@@ -37,11 +37,12 @@ public class UserRequestDto {
 
 
     @Builder
-    public UserRequestDto(String username, String nickname, String password, String email) {
+    public UserRequestDto(String username, String nickname, String password, String email,Role role) {
         this.username = username;
         this.nickname = nickname;
         this.password = password;
         this.email = email;
+        this.role=role;
     }
 
     public User toEntity(){
