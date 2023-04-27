@@ -10,6 +10,7 @@ import java.io.Serializable;
 
 @Getter
 public class UserResponseDto implements Serializable {
+    private Long id;
     private String username;
     private String nickname;
     private String email;
@@ -17,6 +18,7 @@ public class UserResponseDto implements Serializable {
     private String modifiedDate;
 
     public UserResponseDto(User userEntity) {
+        this.id=userEntity.getId();
         this.username=userEntity.getUsername();
         this.nickname=userEntity.getNickname();
         this.email=userEntity.getEmail();

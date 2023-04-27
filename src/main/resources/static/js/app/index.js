@@ -91,6 +91,7 @@ var main = {
             password: $('#password').val(),
             modifiedDate: $('#modifiedDate').val()
         }
+
         if(!data.nickname || data.nickname.trim() === "" || !data.password || data.password.trim() === "") {
             alert("공백 또는 입력하지 않은 부분이 있습니다.");
             return false;

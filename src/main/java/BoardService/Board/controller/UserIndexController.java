@@ -1,6 +1,11 @@
 package BoardService.Board.controller;
 
 import BoardService.Board.dto.userdto.UserRequestDto;
+import BoardService.Board.dto.userdto.UserResponseDto;
+import BoardService.Board.security.auth.LoginUser;
+import BoardService.Board.security.validator.EmailValidate;
+import BoardService.Board.security.validator.NicknameValidate;
+import BoardService.Board.security.validator.UsernameValidate;
 import BoardService.Board.service.UserService;
 import lombok.Getter;import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -9,8 +14,11 @@ import org.springframework.security.web.authentication.logout.SecurityContextLog
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -21,6 +29,16 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class UserIndexController {
     private final UserService userService;
+    private final UsernameValidate usernameValidate;
+    private final NicknameValidate nicknameValidate;
+    private final EmailValidate emailValidate;
+
+    @InitBinder
+    public void validatorBinder(WebDataBinder binder){
+        binder.addValidators(usernameValidate);
+        binder.addValidators(nicknameValidate);
+        binder.addValidators(emailValidate);
+    }
 
     @GetMapping("/auth/join")
     public String join() {
@@ -37,15 +55,16 @@ public class UserIndexController {
             }
             return "users/userJoin";
         }
-        userService.checkUsernameDup(dto);
-        userService.checkNicknameDup(dto);
-        userService.checkEmailDup(dto);
         userService.userJoin(dto);
         return "redirect:/users/login";
     }
 
     @GetMapping("/auth/login")
-    public String login() {
+    public String login(@RequestParam(value = "error",required = false)String error,
+                        @RequestParam(value = "exception",required = false)String exception,
+                        Model model) {
+        model.addAttribute("error",error);
+        model.addAttribute("exception",exception);
         return "users/userLogin";
     }
 
@@ -56,6 +75,15 @@ public class UserIndexController {
             new SecurityContextLogoutHandler().logout(request,response,authentication);
         }
         return "redirect:/";
+    }
+
+    @GetMapping("/userUpdate")
+    public String userUpdate(@LoginUser UserResponseDto user,Model model){
+        if(user!=null){
+            model.addAttribute("users",user);
+
+        }
+        return "users/userUpdate";
     }
 
 }

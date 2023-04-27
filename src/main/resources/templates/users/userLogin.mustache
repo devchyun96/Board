@@ -11,6 +11,11 @@
                 <label>비밀번호</label>
                 <input type="text" class="form-control" name="password" placeholder="비밀번호를 입력해주세요">
             </div>
+            <span>
+                {{#error}}
+                    <p id="valid" class="alert alert-danger">{{exception}}</p>
+                {{/error}}
+            </span>
             <button class="btn btn-primary">로그인</button>
         </form>
     </div>

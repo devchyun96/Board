@@ -1,5 +1,6 @@
 package BoardService.Board.service;
 
+import BoardService.Board.domain.User;
 import BoardService.Board.dto.userdto.UserRequestDto;
 import BoardService.Board.repository.userrepository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -9,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
 
+import java.security.spec.ECField;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,27 +37,14 @@ public class UserService {
         }
         return validate;
     }
-    @Transactional(readOnly = true)
-    public void checkUsernameDup(UserRequestDto dto){
-        boolean existsByUsername = userRepository.existsByUsername(dto.toEntity().getUsername());
-        if(existsByUsername){
-            throw new IllegalStateException("같은 아이디가 존재합니다.");
-        }
-    }
+    @Transactional
+    public void userUpdate(UserRequestDto dto) {
+        User user = userRepository.findById(dto.toEntity().getId())
+                .orElseThrow(() -> new IllegalArgumentException("해당 회원이 존재하지 않습니다."));
 
-    @Transactional(readOnly = true)
-    public void checkNicknameDup(UserRequestDto dto){
-        boolean existsByNickname = userRepository.existsByNickname(dto.toEntity().getNickname());
-        if(existsByNickname){
-            throw new IllegalStateException("같은 닉네임이 존재합니다.");
-        }
-    }
-    @Transactional(readOnly = true)
-    public void checkEmailDup(UserRequestDto dto){
-        boolean existsByEmail = userRepository.existsByEmail(dto.toEntity().getEmail());
-        if(existsByEmail){
-            throw new IllegalStateException("같은 이메일이 존재합니다.");
-        }
+        String encode = passwordEncoder.encode(dto.getPassword());
+        user.userUpdate(dto.getNickname(), encode);
+
     }
 
 }

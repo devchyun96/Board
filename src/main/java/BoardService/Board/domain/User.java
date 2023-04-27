@@ -23,7 +23,7 @@ public class User extends BaseTimeEntity{
     @Column(length = 100,nullable = false)
     private String password; //password
 
-    @Column(length = 30,nullable = false,unique = true)
+    @Column(nullable = false,unique = true)
     private String nickname; // alias
 
     @Column(nullable = false)
@@ -34,12 +34,17 @@ public class User extends BaseTimeEntity{
     private Role role;
 
     @Builder
-    public User(String username, String password, String nickname, String email,Role role) {
+    public User(Long id,String username, String password, String nickname, String email,Role role) {
+        this.id= id;
         this.username = username;
         this.password = password;
         this.nickname = nickname;
         this.email = email;
         this.role=role;
+    }
+    public User updateModifiedDate() {
+        this.onPreUpdate();
+        return this;
     }
 
     public User userUpdate(String password, String nickname){
