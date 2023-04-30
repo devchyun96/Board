@@ -20,10 +20,10 @@ public class User extends BaseTimeEntity{
     @Column(length = 30,nullable = false,unique = true)
     private String username; //userId
 
-    @Column(length = 100,nullable = false)
+    @Column(length = 100)
     private String password; //password
 
-    @Column(nullable = false,unique = true)
+    @Column(unique = true,nullable = false)
     private String nickname; // alias
 
     @Column(nullable = false)
@@ -47,10 +47,9 @@ public class User extends BaseTimeEntity{
         return this;
     }
 
-    public User userUpdate(String password, String nickname){
+    public void userUpdate(String password, String nickname){
         this.password=password;
         this.nickname=nickname;
-        return this;
     }
 
     public String getRoleKey(){

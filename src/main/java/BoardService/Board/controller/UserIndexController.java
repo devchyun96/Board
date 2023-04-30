@@ -15,10 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -56,7 +53,7 @@ public class UserIndexController {
             return "users/userJoin";
         }
         userService.userJoin(dto);
-        return "redirect:/users/login";
+        return "redirect:/auth/login";
     }
 
     @GetMapping("/auth/login")
@@ -81,7 +78,6 @@ public class UserIndexController {
     public String userUpdate(@LoginUser UserResponseDto user,Model model){
         if(user!=null){
             model.addAttribute("users",user);
-
         }
         return "users/userUpdate";
     }

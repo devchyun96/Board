@@ -20,8 +20,8 @@ import java.util.Collections;
 @Service
 public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequest,OAuth2User> {
 
-    private UserRepository userRepository;
-    private HttpSession httpSession;
+    private final UserRepository userRepository;
+    private final HttpSession httpSession;
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
@@ -45,7 +45,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 
     private User saveOrUpdate(OAuthAttributes attributes) {
         User user = userRepository.findByEmail(attributes.getEmail())
-                .map(entity -> entity.userUpdate(attributes.getUsername(), attributes.getNickname()))
+                .map(User::updateModifiedDate)
                 .orElse(attributes.toEntity());
 
         return userRepository.save(user);
