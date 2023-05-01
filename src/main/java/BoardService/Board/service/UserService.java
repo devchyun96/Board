@@ -44,8 +44,7 @@ public class UserService {
         User user = userRepository.findById(dto.toEntity().getId())
                 .orElseThrow(() -> new IllegalArgumentException("해당 회원이 존재하지 않습니다."));
 
-        String encode = passwordEncoder.encode(dto.getPassword());
-        user.userUpdate(dto.getNickname(), encode);
+        user.userUpdate(dto.getNickname(), passwordEncoder.encode(dto.getPassword()));
 
     }
 

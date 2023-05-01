@@ -47,9 +47,9 @@ public class User extends BaseTimeEntity{
         return this;
     }
 
-    public void userUpdate(String password, String nickname){
-        this.password=password;
+    public void userUpdate(String nickname, String password){
         this.nickname=nickname;
+        this.password=password;
     }
 
     public String getRoleKey(){

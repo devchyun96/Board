@@ -12,6 +12,7 @@ import java.io.Serializable;
 public class UserResponseDto implements Serializable {
     private Long id;
     private String username;
+    private String password;
     private String nickname;
     private String email;
     private Role role;
@@ -19,6 +20,7 @@ public class UserResponseDto implements Serializable {
 
     public UserResponseDto(User userEntity) {
         this.id=userEntity.getId();
+        this.password=userEntity.getPassword();
         this.username=userEntity.getUsername();
         this.nickname=userEntity.getNickname();
         this.email=userEntity.getEmail();

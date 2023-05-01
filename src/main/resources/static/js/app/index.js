@@ -116,7 +116,12 @@ var main = {
                 window.location.href= "/";
 
             }).fail(function (error) {
-                alert(JSON.stringify(error));
+               if (error.status === 500) {
+                        alert("이미 사용중인 닉네임 입니다.");
+                        $('#nickname').focus();
+               }else{
+                    alert(JSON.stringify(error));
+               }
             });
         } else{
             return false;

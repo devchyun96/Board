@@ -50,17 +50,17 @@ public class SecurityConfig {
     }
 
     @Bean
-    public AuthenticationProvider authenticationProvider() {
+    public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
         provider.setUserDetailsService(customUserDetailService);
-        provider.setPasswordEncoder(new BCryptPasswordEncoder());
+        provider.setPasswordEncoder(passwordEncoder());
         return provider;
     }
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer(){
         return (web)->web
                 .ignoring()
-                .antMatchers("/", "/css/**", "/images/**", "/js/**", "/h2-console/**", "/profile");
+                .antMatchers("/", "/css/**", "/images/**", "/js/**", "/h2-console/**");
     }
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -73,7 +73,7 @@ public class SecurityConfig {
                 .and()
                 .formLogin()
                 .loginPage("/auth/login")
-                .loginProcessingUrl("/auth/loginProc")
+                .loginProcessingUrl("/auth/loginProcedure")
                 .failureHandler(authenticationFailureHandler)
                 .defaultSuccessUrl("/")
                 .and()
