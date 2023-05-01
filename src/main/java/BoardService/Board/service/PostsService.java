@@ -1,11 +1,13 @@
 package BoardService.Board.service;
 
 import BoardService.Board.domain.Posts;
+import BoardService.Board.domain.User;
 import BoardService.Board.dto.postsdto.PostsListDto;
 import BoardService.Board.dto.postsdto.PostsResponseDto;
 import BoardService.Board.dto.postsdto.PostsSaveDto;
 import BoardService.Board.dto.postsdto.PostsUpdateDto;
 import BoardService.Board.repository.postsrepository.PostsRepository;
+import BoardService.Board.repository.userrepository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,10 +23,16 @@ import java.util.stream.Collectors;
 public class PostsService {
     private final PostsRepository postsRepository;
 
+    private final UserRepository userRepository;
     @Transactional
-    public Long save(PostsSaveDto dto){
-        return postsRepository.save(dto.toEntity())
-                .getId();
+    public Long save(String nickname,PostsSaveDto dto){
+        User user=userRepository.findByNickname(nickname);
+        dto.setUser(user);
+
+        Posts posts=dto.toEntity();
+        postsRepository.save(posts);
+
+        return posts.getId();
     }
 
     @Transactional

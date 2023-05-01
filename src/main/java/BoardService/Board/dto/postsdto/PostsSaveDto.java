@@ -1,12 +1,12 @@
 package BoardService.Board.dto.postsdto;
 
 import BoardService.Board.domain.Posts;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import BoardService.Board.domain.User;
+import lombok.*;
 
-@Getter
-@NoArgsConstructor
+
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Data
 public class PostsSaveDto {
 
     private String title;
@@ -19,13 +19,16 @@ public class PostsSaveDto {
 
     private int recommend;
 
+    private User user;
+
     @Builder
-    public PostsSaveDto(String title, String content, String author, int view, int recommend) {
+    public PostsSaveDto(String title, String content, String author, int view, int recommend,User user) {
         this.title = title;
         this.content = content;
         this.author = author;
         this.view = view;
         this.recommend = recommend;
+        this.user=user;
     }
 
     public Posts toEntity(){
@@ -35,6 +38,7 @@ public class PostsSaveDto {
                 .author(author)
                 .view(0)
                 .recommend(0)
+                .user(user)
                 .build();
     }
 }

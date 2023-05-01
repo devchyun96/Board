@@ -61,7 +61,10 @@ public class PostsIndexController {
     public String postsView(@PathVariable Long id,Model model,@LoginUser UserResponseDto user) {
         PostsResponseDto dto=postsService.findById(id);
         if(user != null) {
-            model.addAttribute("users", user);
+            model.addAttribute("users", user.getNickname());
+            if(dto.getUserId().equals(user.getId())){
+                model.addAttribute("author",true);
+            }
         }
         postsService.updateView(id);
         model.addAttribute("post",dto);

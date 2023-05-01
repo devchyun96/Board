@@ -3,8 +3,11 @@ package BoardService.Board.controller;
 import BoardService.Board.dto.postsdto.PostsResponseDto;
 import BoardService.Board.dto.postsdto.PostsSaveDto;
 import BoardService.Board.dto.postsdto.PostsUpdateDto;
+import BoardService.Board.dto.userdto.UserResponseDto;
+import BoardService.Board.security.auth.LoginUser;
 import BoardService.Board.service.PostsService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
@@ -14,8 +17,8 @@ public class PostsApiController {
     private final PostsService postsService;
 
     @PostMapping("/api/v1/posts")
-    public Long save(@RequestBody PostsSaveDto requestDto) {
-        return postsService.save(requestDto);
+    public ResponseEntity save(@RequestBody PostsSaveDto requestDto, @LoginUser UserResponseDto dto) {
+        return ResponseEntity.ok(postsService.save(dto.getNickname(), requestDto));
     }
 
     @PutMapping("/api/v1/posts/{id}")

@@ -4,7 +4,7 @@
     <div class="container col-md-8">
         <form>
             <div class="form-group">
-                <label for="id">글 번호</label>
+                <label for="id">글 번호 : {{post.id}}</label>
                 <input type="text" class="form-control" id="id" value="{{post.id}}" readonly>
             </div>
             <div class="form-group">
@@ -12,7 +12,7 @@
                 <input type="text" class="form-control" id="title" value="{{post.title}}" readonly>
             </div>
             <div class="form-group">
-                <label for="author"> 작성자 </label>
+                <label for="author"> 작성자 : {{post.author}} </label>
                 <input type="text" class="form-control" id="author" value="{{post.author}}" readonly>
             </div>
             <div class="form-group">
@@ -25,9 +25,16 @@
                 </svg> {{post.recommend}}
             </button>
         </form>
-        <a href="/" role="button" class="btn btn-secondary">글 목록</a>
-        <a href="/posts/update/{{post.id}}" role="button" class="btn btn-primary">수정</a>
-        <button type="button" onclick="" class="btn btn-danger" id="btn-delete">삭제</button>
+        {{#users}}
+            <a href="/" role="button" class="btn btn-secondary">글 목록</a>
+            {{#author}}
+                <a href="/posts/update/{{post.id}}" role="button" class="btn btn-primary">수정</a>
+                <button type="button" onclick="" class="btn btn-danger" id="btn-delete">삭제</button>
+            {{/author}}
+        {{/users}}
+        {{^users}}
+            <a href="/" role="button" class="btn btn-secondary">글 목록</a>
+        {{/users}}
     </div>
 </div>
 {{>layout/footer}}
