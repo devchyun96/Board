@@ -15,7 +15,11 @@ var main = {
 
         $('#btn-userUpdate').on('click', function(){
             _this.userUpdate();
-        })
+        });
+
+        $('#btn-commentSave').on('click', function () {
+             _this.commentSave();
+        });
     },
     save : function () {
         var data = {
@@ -125,6 +129,32 @@ var main = {
             });
         } else{
             return false;
+        }
+    },
+
+    commentSave : function(){
+        var data={
+            postsId: $('#postsId').val(),
+            comment: $('#comment').val()
+        }
+        if (!data.comment || data.comment.trim() === "") {
+                  alert("공백 또는 입력하지 않은 부분이 있습니다.");
+                  return false;
+        }
+        var check = confirm("수정하시겠습니까?");
+        if (check === true) {
+            $.ajax({
+                type: 'PUT',
+                url: '/api/v1/posts/' + data.postsId + '/comments/',
+                dataType: 'JSON',
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify(data)
+            }).done(function () {
+                alert('댓글을 등록했습니다.');
+                window.location.reload();
+            }).fail(function (error) {
+                alert(JSON.stringify(error));
+            });
         }
     }
 };

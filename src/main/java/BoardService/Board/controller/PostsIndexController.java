@@ -3,6 +3,7 @@ package BoardService.Board.controller;
 
 import BoardService.Board.domain.Posts;
 import BoardService.Board.domain.User;
+import BoardService.Board.dto.commentdto.CommentResponseDto;
 import BoardService.Board.dto.postsdto.PostsResponseDto;
 import BoardService.Board.dto.userdto.UserResponseDto;
 import BoardService.Board.security.auth.LoginUser;
@@ -60,6 +61,12 @@ public class PostsIndexController {
     @GetMapping("/posts/view/{id}")
     public String postsView(@PathVariable Long id,Model model,@LoginUser UserResponseDto user) {
         PostsResponseDto dto=postsService.findById(id);
+        List<CommentResponseDto> comments=dto.getComments();
+
+        if (comments != null && !comments.isEmpty()) {
+            model.addAttribute("comments",comments);
+        }
+
         if(user != null) {
             model.addAttribute("users", user.getNickname());
             if(dto.getUserId().equals(user.getId())){

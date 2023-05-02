@@ -5,8 +5,10 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.core.annotation.Order;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Getter
@@ -34,6 +36,11 @@ public class Posts extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
+
+    @OneToMany(mappedBy = "posts",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @OrderBy("id asc")
+    private List<Comment> comments;
+
     @Builder
     public Posts( String title, String author, String content, int view, int recommend, User user) {
         this.title = title;
