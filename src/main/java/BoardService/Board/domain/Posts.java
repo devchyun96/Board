@@ -37,7 +37,7 @@ public class Posts extends BaseTimeEntity {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(mappedBy = "posts",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "posts",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     @OrderBy("id asc")
     private List<Comment> comments;
 

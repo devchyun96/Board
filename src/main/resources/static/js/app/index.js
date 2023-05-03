@@ -1,6 +1,6 @@
 var main = {
     init : function () {
-        var _this = this;
+        const _this = this;
         $('#btn-save').on('click', function () {
             _this.save();
         });
@@ -20,9 +20,16 @@ var main = {
         $('#btn-commentSave').on('click', function () {
              _this.commentSave();
         });
+
+        document.querySelectorAll('#btn-commentUpdate').forEach(function (item){
+            item.addEventListener('click',function(){
+                const form=this.closest('commentForm');
+                _this.commentUpdate(form);
+            });
+        });
     },
     save : function () {
-        var data = {
+        const data = {
             title: $('#title').val(),
             author: $('#author').val(),
             content: $('#content').val(),
@@ -43,14 +50,14 @@ var main = {
     },
     update : function () {
 
-        var data = {
+        const data = {
             id: $('#id').val(),
             title: $('#title').val(),
             content: $('#content').val()
         };
 
 
-        var check=confirm("글을 수정합니다.");
+        const check=confirm("글을 수정합니다.");
         if(check===true){
            if (!data.title || data.title.trim() === "" || !data.content || data.content.trim() === "") {
                       alert("입력되지 않았습니다.");
@@ -73,7 +80,7 @@ var main = {
       }
     },
     delete : function () {
-        var id = $('#id').val();
+        const id = $('#id').val();
 
         $.ajax({
             type: 'DELETE',
@@ -88,7 +95,7 @@ var main = {
         });
     },
     userUpdate : function() {
-        var data={
+        const data={
             id: $('#id').val(),
             username: $('#username').val(),
             nickname: $('#nickname').val(),
@@ -108,7 +115,7 @@ var main = {
             $('#nickname').focus();
             return false;
         }
-        var check= confirm("회원정보를 수정합니다.");
+        const check= confirm("회원정보를 수정합니다.");
         if(check===true){
             $.ajax({
                 type : "PUT",
@@ -133,7 +140,7 @@ var main = {
     },
 
     commentSave : function(){
-        var data={
+        const data={
             postsId: $('#postsId').val(),
             comment: $('#comment').val()
         }
@@ -141,18 +148,60 @@ var main = {
                   alert("공백 또는 입력하지 않은 부분이 있습니다.");
                   return false;
         }
-        var check = confirm("수정하시겠습니까?");
+        const check = confirm("등록하시겠습니까?");
         if (check === true) {
             $.ajax({
-                type: 'PUT',
+                type: 'POST',
                 url: '/api/v1/posts/' + data.postsId + '/comments/',
-                dataType: 'JSON',
+                dataType: 'text',
                 contentType: 'application/json; charset=utf-8',
                 data: JSON.stringify(data)
             }).done(function () {
                 alert('댓글을 등록했습니다.');
                 window.location.reload();
             }).fail(function (error) {
+                alert(JSON.stringify(error));
+            });
+        }
+    },
+
+    commentUpdate : function(form){
+        const data= {
+            id: form.querySelector('#id').value,
+            postsId: form.querySelector('#postsId').value,
+            comment: form.querySelector('#commentContent').value
+        }
+        if(!data.comment || data.comment.trim()===""){
+            alert("공백 또는 입력하지 않은 부분이 있습니다.");
+            return false;
+        }
+        const check=confirm("수정하시겠습니까?");
+        if(check===true){
+            $.ajax({
+                type: 'PUT',
+                url: '/api/v1/posts' + data.postsId + '/comments/' + data.id,
+                dataType: 'JSON',
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify(data)
+            }).done(function() {
+                window.location.reload();
+            }).fail(function() {
+                alert(JSON.stringify(error));
+            });
+        }
+    },
+
+    commentDelete : function(postsId, commentId){
+        const check = confirm("삭제하시겠습니까?");
+        if(check===true){
+            $.ajax({
+                type: 'DELETE'
+                url: '/api/v1/posts' + postsId + '/comments/' + commentId,
+                dataType: 'JSON'
+            }).done(function (){
+                alert('댓글이 삭제 되었습니다.');
+                window.location.reload();
+            }).fail(function () {
                 alert(JSON.stringify(error));
             });
         }

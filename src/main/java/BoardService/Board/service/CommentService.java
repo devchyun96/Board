@@ -26,10 +26,23 @@ public class CommentService {
 
         dto.setUser(user);
         dto.setPosts(posts);
-
-        Comment comment=dto.toEntity();
-        commentRepository.save(comment);
+        commentRepository.save(dto.toEntity());
 
         return dto.getId();
+    }
+    @Transactional
+    public void commentUpdate(Long id, CommentRequestDto dto) {
+        Comment comment = commentRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 댓글이 존재하지 않습니다." + id));
+
+        comment.commentUpdate(dto.getComment());
+    }
+
+    @Transactional
+    public void delete(Long id){
+        Comment comment=commentRepository.findById(id)
+                .orElseThrow(()->new IllegalArgumentException("해당 댓글이 존재하지 않습니다." +id));
+
+        commentRepository.delete(comment);
     }
 }

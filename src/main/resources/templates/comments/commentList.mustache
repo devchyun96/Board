@@ -1,17 +1,28 @@
 <div class="card">
     <div class="card-header">
-        {{#comments.size}}{{comments.size}}{{/comments.size}} Comments
+        {{#comments.size}}{{comments.size}}{{/comments.size}} 댓글
     </div>
     <ul class="list-group-flush">
         {{#comments}}
-            <li class="list-group-flush">
+            <li id="comments-{{id}} "class="list-group-flush">
                 <span>
                     <span style="font-size: small">{{nickname}}</span>
                     <span style="font-size: xx-small">{{createdDate}}</span>&nbsp;
-                    <button class="btn btn-primary"> 수정</button>
-                    <button class="btn btn-danger"> 삭제</button>
                 </span>
-                <div>{{comment}}</div>
+                <a type="button" data-toggle="collapse" data-target=".multi-collapse-{{id}}"
+                   class="btn btn-primary btn-sm">수정</a>
+                <a type="button" onclick="main.commentDelete({{postsId}},{{id}})"
+                   class="btn btn-danger btn-sm">삭제</a>
+                <p class="collapse multi-collapse-{{id}} show">{{comment}}</p>
+
+                <form class="collapse multi-collapse-{{id}}">
+                    <input type="hidden" id="id" value="{{id}}">
+                    <input type="hidden" id="postsId" value="{{postsId}}">
+                    <div class="form-group">
+                        <textarea class="form-control" id="commentContent" rows="3">{{comment}}</textarea>
+                    </div>
+                    <button type="button" id="btn-commentUpdate" class="btn btn-primary">수정</button>
+                </form>
             </li>
         {{/comments}}
     </ul>

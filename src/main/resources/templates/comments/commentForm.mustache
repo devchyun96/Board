@@ -3,18 +3,18 @@
     <div class="card-header">댓글창</div>
     <form>
         <input type="hidden" id="postsId" value="{{post.id}}">
-        {{#user}}
+        {{#users}}
             <div class="card-body">
                 <textarea id="comment" class="form-control" rows="4" placeholder="댓글을 적어주세요"></textarea>
             </div>
             <div class="card-footer">
                 <button type="button" id="btn-commentSave" class="btn btn-outline-primary"> 댓글 등록 </button>
             </div>
-        {{/user}}
-        {{^user}}
+        {{/users}}
+        {{^users}}
             <div class="card-body" style="font-size: small">
                 <a href="/auth/login">로그인</a> 하시면 댓글을 등록할 수 있습니다.
             </div>
-        {{/user}}
+        {{/users}}
     </form>
 </div>
