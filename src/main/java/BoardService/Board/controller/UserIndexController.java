@@ -78,6 +78,7 @@ public class UserIndexController {
     public String userUpdate(@LoginUser UserResponseDto user,Model model){
         if(user!=null){
             model.addAttribute("users",user);
+
         }
         return "users/userUpdate";
     }

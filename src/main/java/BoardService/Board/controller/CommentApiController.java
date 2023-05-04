@@ -21,14 +21,14 @@ public class CommentApiController {
         return ResponseEntity.ok(commentService.commentSave(user.getNickname(),id ,dto));
     }
 
-    @PutMapping("api/v1/posts/{id}/comments/{id}")
+    @PutMapping("api/v1/posts/{id}/comments/{commentId}")
     public ResponseEntity commentUpdate(@PathVariable Long id
             , @RequestBody CommentRequestDto dto) {
         commentService.commentUpdate(id, dto);
         return ResponseEntity.ok(id);
     }
 
-    @DeleteMapping("api/v1/posts/{id}/comments/{id}")
+    @DeleteMapping("api/v1/posts/{id}/comments/{commentId}")
     public ResponseEntity commentDelete(@PathVariable Long id) {
         commentService.delete(id);
         return ResponseEntity.ok(id);

@@ -1,4 +1,4 @@
-var main = {
+const main = {
     init : function () {
         const _this = this;
         $('#btn-save').on('click', function () {
@@ -20,10 +20,9 @@ var main = {
         $('#btn-commentSave').on('click', function () {
              _this.commentSave();
         });
-
         document.querySelectorAll('#btn-commentUpdate').forEach(function (item){
             item.addEventListener('click',function(){
-                const form=this.closest('commentForm');
+                const form=this.closest('form');
                 _this.commentUpdate(form);
             });
         });
@@ -164,46 +163,54 @@ var main = {
             });
         }
     },
-
-    commentUpdate : function(form){
-        const data= {
-            id: form.querySelector('#id').value,
+    commentUpdate: function(form){
+        const data = {
+            commentId: form.querySelector('#id').value,
             postsId: form.querySelector('#postsId').value,
-            comment: form.querySelector('#commentContent').value
+            comment: form.querySelector('#commentContent').value,
+            authorUserId: form.querySelector('#authorUserId').value,
+            sessionUserId: form.querySelector('#sessionUserId').value
         }
-        if(!data.comment || data.comment.trim()===""){
+        if(data.authorUserId!==data.sessionUserId){
+            alert("본인이 작성한 댓글만 수정이 가능합니다.")
+            return false;
+        }
+        if (!data.comment || data.comment.trim() === "") {
             alert("공백 또는 입력하지 않은 부분이 있습니다.");
             return false;
         }
-        const check=confirm("수정하시겠습니까?");
-        if(check===true){
+        const con_check = confirm("수정하시겠습니까?");
+        if (con_check === true) {
             $.ajax({
                 type: 'PUT',
-                url: '/api/v1/posts' + data.postsId + '/comments/' + data.id,
+                url: '/api/v1/posts/' + data.postsId + '/comments/' + data.commentId,
                 dataType: 'JSON',
                 contentType: 'application/json; charset=utf-8',
                 data: JSON.stringify(data)
-            }).done(function() {
+            }).done(function () {
                 window.location.reload();
-            }).fail(function() {
+            }).fail(function (error) {
                 alert(JSON.stringify(error));
-            });
+             });
         }
     },
-
-    commentDelete : function(postsId, commentId){
-        const check = confirm("삭제하시겠습니까?");
-        if(check===true){
-            $.ajax({
-                type: 'DELETE'
-                url: '/api/v1/posts' + postsId + '/comments/' + commentId,
-                dataType: 'JSON'
-            }).done(function (){
-                alert('댓글이 삭제 되었습니다.');
-                window.location.reload();
-            }).fail(function () {
-                alert(JSON.stringify(error));
-            });
+    commentDelete : function (postsId,commentId, commentAuthorId, sessionUserId){
+        if(commentAuthorId!==sessionUserId){
+            alert("본인이 작성한 댓글만 삭제 가능합니다.");
+        }else{
+            const check = confirm("삭제하시겠습니까?");
+            if(check===true){
+                $.ajax({
+                    type: 'DELETE',
+                    url: '/api/v1/posts/' + postsId + '/comments/' + commentId,
+                    dataType: 'JSON'
+                }).done(function(){
+                    alert('댓글이 삭제되었습니다.');
+                    window.location.reload();
+                }).fail(function (error){
+                    alert(JSON.stringify(error));
+                });
+            }
         }
     }
 };

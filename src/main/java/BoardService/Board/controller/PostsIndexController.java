@@ -51,8 +51,12 @@ public class PostsIndexController {
     }
 
     @GetMapping("/posts/update/{id}")
-    public String postsUpdate(@PathVariable Long id, Model model) {
+    public String postsUpdate(@PathVariable Long id, Model model,
+                              @LoginUser UserResponseDto user) {
         PostsResponseDto dto=postsService.findById(id);
+        if(user!=null){
+            model.addAttribute("users",user);
+        }
         model.addAttribute("post",dto);
 
         return "posts/postsUpdate";
@@ -68,9 +72,13 @@ public class PostsIndexController {
         }
 
         if(user != null) {
-            model.addAttribute("users", user.getNickname());
+            model.addAttribute("users", user);
+
             if(dto.getUserId().equals(user.getId())){
                 model.addAttribute("author",true);
+            }
+            if (comments.stream().anyMatch(s -> s.getUserId().equals(user.getId()))) {
+                model.addAttribute("isAuthor",true);
             }
         }
         postsService.updateView(id);

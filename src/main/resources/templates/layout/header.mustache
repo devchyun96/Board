@@ -11,8 +11,10 @@
     <a class="navbar-brand" href="/">Board</a>
     <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
         <ul class="navbar-nav">
+            {{! 로그인 되었을 때}}
             {{#users}}
-                Logged in as: <span id="user">{{users}}</span>
+                {{! 로그인 자리에 유저의 닉네임}}
+                Logged in as: <span id="users">{{users.nickname}}</span>
                 <a href="/logout" class="btn btn-info active" role="button">Logout</a>
                 <a href="/userUpdate" class="btn btn-outline-dark">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-wrench" viewBox="0 0 16 16">
@@ -20,6 +22,7 @@
                     </svg>
                 </a>
             {{/users}}
+            {{! 로그인 되지 않았을 때}}
             {{^users}}
                 <li class="nav-item">
                     <a href="/oauth2/authorization/google" class="btn btn-success active" role="button">Google Login</a>
