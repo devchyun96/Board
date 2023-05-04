@@ -3,11 +3,11 @@
 
 
 # 목차
-**[프로젝트 소개](https://github.com/devchyun96/Board/edit/master/README.md?plain1=#L22)**
+**[프로젝트 소개](https://github.com/devchyun96/Board/README.md?plain1=#L22)**
 
-**[사용 기술](https://github.com/devchyun96/Board/edit/master/README.md?plain1=#L36)**
+**[사용 기술](https://github.com/devchyun96/Board/README.md?plain1=#L36)**
 
-**[스키마](https://github.com/devchyun96/Board/edit/master/README.md?plain1=#L67)**
+**[스키마](https://github.com/devchyun96/Board/README.md?plain1=#L67)**
 
 **API**
 
