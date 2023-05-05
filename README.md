@@ -780,6 +780,23 @@ mustache
 login securityconfig 
 ```java
     @Bean
+    public BCryptPasswordEncoder passwordEncoder(){
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager() throws Exception {
+        return new ProviderManager(Arrays.asList(authenticationProvider())); 
+    }
+
+    @Bean
+    public DaoAuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider(); 
+        provider.setUserDetailsService(customUserDetailService); //loadbyusername의 정보를 담음
+        provider.setPasswordEncoder(passwordEncoder());
+        return provider;
+    }
+    @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
                 .csrf().ignoringAntMatchers("/api/**")
@@ -886,8 +903,6 @@ api controller
 hyun2였던 닉네임을 devchyun으로 수정
 ![update user](https://user-images.githubusercontent.com/74132326/236451625-13145242-e45c-4a10-b20c-70640c2fcf48.jpg)
 
-
-	
 </details>
 	
     
