@@ -206,9 +206,9 @@ src
 
 | API URL | API method|  API 기능    |
 | ------- | --------- | ----------------- |
-| `/api/v1/posts/{id}/comments| `POST` | 댓글 등록 |
-| `/api/v1/posts/{id}/comments/{commentId} | `PUT` | 댓글 수정 |
-| `/api/v1/posts/{id}/comments/{commentId} | `DELETE` | 댓글 삭제 |
+| `/api/v1/posts/{id}/comments` | `POST` | 댓글 등록 |
+| `/api/v1/posts/{id}/comments/{commentId}` | `PUT` | 댓글 수정 |
+| `/api/v1/posts/{id}/comments/{commentId}` | `DELETE` | 댓글 삭제 |
 
     
 
