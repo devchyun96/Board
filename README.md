@@ -11,7 +11,7 @@
 
 **[실행 부분](#실행-부분)**
 
-**보완해야 할 점과 느낀점**
+**[보완해야 할 점과 느낀점](#보완해야-할-점과-느낀점)**
 
 
 
@@ -837,6 +837,25 @@ mustache
             <button class="btn btn-primary">로그인</button>
         </form>	
 ```
+	
+OAuth2.0
+```java
+    private static OAuthAttributes ofGoogle(String userNameAttributeName, Map<String, Object> attributes) {
+        return OAuthAttributes.builder()
+                .username((String) attributes.get("email"))
+                .nickname((String) attributes.get("name"))
+                .email((String) attributes.get("email"))
+                .attributes(attributes)
+                .nameAttributeKey(userNameAttributeName)
+                .build();
+    }
+```
+
+구글 로그인 화면
+![google oauth2](https://user-images.githubusercontent.com/74132326/236486815-6fe72fcc-0f22-4bf3-90ee-184c42667c81.jpg)
+
+네이버 로그인 화면
+![naver oauth2 0](https://user-images.githubusercontent.com/74132326/236490294-204634e0-d42b-4b37-8ee7-175997c5eb34.jpg)
 
 로그인 화면
 ![login form](https://user-images.githubusercontent.com/74132326/236448628-8b0a1860-4987-4b72-bb59-57a98bd636b5.jpg)
@@ -1172,6 +1191,18 @@ api controller
 ![댓글 삭제 완료 후](https://user-images.githubusercontent.com/74132326/236463187-9dea84f7-52f4-477a-a95b-e6bc6ee16278.jpg)
 
 </details>
+	
+# 보완해야 할 점과 느낀점
+	
+ 제대로 된 게시판을 만드는건 처음이라 써보고 싶은 기술을 제대로 써보지 못한게 참 아쉽다.
+예를 들면 redis Templates ,webclient 같은 기술을 적용해보고 싶었다.
+게시판을 완성한 뒤에도 redis 의 캐싱 기능으로 조회수 중복 어뷰징을 방지하거나, webclient로 외부 api를 불러오는 것을 해보고 리팩토링을 통해 성능 개선을 할 생각이다.
+게시판의 추천 기능이나 인기글 기능도 만들고 싶기 때문에 계속해서 업로드 할 예정이다.
+	
+ 만들면서 느낀 점은 오류가 하나 생기면 그것을 고치는 것은 시간이 생각보다 더 많이 든다는 것이다.
+날 가장 괴롭혔던 오류는 머스테치의 no method 문제였다. 알고보면 그저 내가 오탈자를 많이 내거나 데이터 입력을 부정확하게 한 경우가 많았다.
+막상 오류를 해결하면 그렇게 어려운 문제가 아니었다는게 더 충격이었다. 이론과 경험은 커다란 괴리가 있다는 것을 느끼게 해준 프로젝트였다.
+
 	
 	
     
