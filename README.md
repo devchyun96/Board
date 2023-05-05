@@ -67,71 +67,94 @@
 ```
 src
 ├─└main
-│──└java
-│────└BoardService
-│────────└ board
-│───────────├ config 
-│───────────│──└JpaConfig        
-│───────────├ controller
-│───────────│──├ CommentApiContoller
-│───────────│──├ PostsApiController
-│───────────│──├ PostsIndexController
-│───────────│──├ UserApiController
-│───────────│──└ UserIndexController
-│───────────├ domain
-│───────────│──├ BaseTimeEntity
-│───────────│──├ Comment
-│───────────│──├ Posts
-│───────────│──├ Role
-│───────────│──└ User
-│───────────├ dto
-│───────────│─── commentdto
-│───────────│────├ CommentRequestDto
-│───────────│────└ CommentResponseDto
-│───────────│─── postsdto
-│───────────│────├ PostsListDto
-│───────────│────├ PostsResponseDto
-│───────────│────├ PostsSaveDto
-│───────────│────└ PostsUpdateDto
-│───────────│─── userdto
-│───────────│────├ UserRequestDto
-│───────────│────└ UserResponseDto
-│───────────├ repository
-│───────────│─── commentrespository
-│───────────│────└ CommentRepository
-│───────────│─── postsrepository
-│───────────│────├ PostsRepository
-│───────────│────├ PostsRepositoryCustom
-│───────────│────└ PostsRepositoryCustomImpl
-│───────────│─── userrepository
-│───────────│────└ UserRepository
-│───────────├ security
-│───────────│─── auth
-│───────────│────├ CustomAuthFailHandler
-│───────────│────├ CustomUserDetails
-│───────────│────├ CustomUserDetailService
-│───────────│────├ LoginUser
-│───────────│────└ LoginUserArgumentResolver
-│───────────│─── config
-│───────────│────├ SecurityConfig
-│───────────│────└ WebConfig
-│───────────│─── oauth
-│───────────│────├ CustomOAuth2UserService
-│───────────│────└ OAuthAttributes
-│───────────│─── validator
-│───────────│────├ AbstractValidator
-│───────────│────├ EmailValidate
-│───────────│────├ NicknameValidate
-│───────────│────└ UsernameValidate
-
-
-
-
-
-
-
-
-
+│──├java
+│──├─└BoardService
+│──├─────└ board
+│──├────────├ config 
+│──├────────│──└JpaConfig        
+│──├────────├ controller
+│──├────────│──├ CommentApiContoller
+│──├────────│──├ PostsApiController
+│──├────────│──├ PostsIndexController
+│──├────────│──├ UserApiController
+│──├────────│──└ UserIndexController
+│──├────────├ domain
+│──├────────│──├ BaseTimeEntity
+│──├────────│──├ Comment
+│──├────────│──├ Posts
+│──├────────│──├ Role
+│──├────────│──└ User
+│──├────────├ dto
+│──├────────│─── commentdto
+│──├────────│────├ CommentRequestDto
+│──├────────│────└ CommentResponseDto
+│──├────────│─── postsdto
+│──├────────│────├ PostsListDto
+│──├────────│────├ PostsResponseDto
+│──├────────│────├ PostsSaveDto
+│──├────────│────└ PostsUpdateDto
+│──├────────│─── userdto
+│──├────────│────├ UserRequestDto
+│──├────────│────└ UserResponseDto
+│──├────────├ repository
+│──├────────│─── commentrespository
+│──├────────│────└ CommentRepository
+│──├────────│─── postsrepository
+│──├────────│────├ PostsRepository
+│──├────────│────├ PostsRepositoryCustom
+│──├────────│────└ PostsRepositoryCustomImpl
+│──├────────│─── userrepository
+│──├────────│────└ UserRepository
+│──├────────├ security
+│──├────────│─── auth
+│──├────────│────├ CustomAuthFailHandler
+│──├────────│────├ CustomUserDetails
+│──├────────│────├ CustomUserDetailService
+│──├────────│────├ LoginUser
+│──├────────│────└ LoginUserArgumentResolver
+│──├────────│─── config
+│──├────────│────├ SecurityConfig
+│──├────────│────└ WebConfig
+│──├────────│─── oauth
+│──├────────│────├ CustomOAuth2UserService
+│──├────────│────└ OAuthAttributes
+│──├────────│─── validator
+│──├────────│────├ AbstractValidator
+│──├────────│────├ EmailValidate
+│──├────────│────├ NicknameValidate
+│──├────────│────└ UsernameValidate
+│──├────────├ service
+│──├────────│──├ CommentService
+│──├────────│──├ PostsService
+│──├────────│──└ UserService
+│──├────────└ Application
+│──├ resources
+│──├── static
+│──├─────├ css
+│──├─────│──└ Board.css
+│──├─────├ js
+│──├─────│──└ app
+│──├─────│─────└ index.js
+│──├── templates
+│──├─────├ comments
+│──├─────├──├ commentForm.mustache
+│──├─────├──└ commentList.mustache
+│──├─────├ layout
+│──├─────├──├ footer.mustache
+│──├─────├──└ header.mustache
+│──├─────├ posts
+│──├─────├──├ postsSave.mustache
+│──├─────├──├ postsSearch.mustache
+│──├─────├──├ postsUpdate.mustache
+│──├─────├──└ postsView.mustache
+│──├─────└ users
+│──├─────├──├ userJoin.mustache
+│──├─────├──├ userLogin.mustache
+│──├─────├──└ userUpdate.mustache
+│──├─────└ index.mustache
+│──├─ application.properties  
+│──└─ application-oauth.properties
+└ test
 ```
 
 
