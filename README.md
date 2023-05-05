@@ -3,7 +3,7 @@
 
 
 # 목차
-**[프로젝트](https://github.com/devchyun96/Board/#프로젝트heading)**
+**[프로젝트](https://github.com/devchyun96/Board/#)**
 
 **사용 기술**
 
