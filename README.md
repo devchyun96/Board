@@ -40,7 +40,7 @@
     
     framework : springboot 2.6.7
   
-    library : spring data jpa / spring security / OAuth2.0
+    library : spring data jpa / spring security / OAuth2.0 / validation / web / queryDsl / lombok
     
     build : Gradle 7.6.2
     
