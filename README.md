@@ -63,7 +63,7 @@
     
     
 # 구조
-**1. DB **
+**1. DB 구조**
 
 ![스키마 다이어그램](https://user-images.githubusercontent.com/74132326/236361155-83dd5b31-9c2d-4032-a8e9-ddf792540402.jpg)
 
