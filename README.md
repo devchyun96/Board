@@ -223,7 +223,6 @@ src
 ![table](https://user-images.githubusercontent.com/74132326/236385849-284f571a-2a41-4c93-bec8-b5e2c8283604.jpg)
 
 	
-	
 ```mustache
     {{#posts}}
     <tr>
@@ -238,6 +237,16 @@ src
 ```
 
 ![page and search](https://user-images.githubusercontent.com/74132326/236385858-8326f124-0d36-4f20-8261-67a44f8419d0.jpg)
+	
+	
+```mustache
+<form action="/posts/search" method="GET" class="form-inline p-2 bd-highlight" role="search">
+    <div class="input-group mb-3">
+    <input type="text" name="keyword" class="form-control" id="search">
+    <button class="btn btn-outline-secondary "type="submit">검색</button>
+    </div>
+</form>
+```	
     
  게시판 조회 방식 
  ```java 
