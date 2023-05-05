@@ -692,7 +692,24 @@ service
         return validate;
     }
 ```
-	
+repository
+```java
+public interface UserRepository extends JpaRepository<User,Long> {
+    Optional<User> findByUsername(String username);
+
+    Optional<User> findByEmail(String email);
+
+    User findByNickname(String nickname);
+
+    /**
+     * 중복 검사 email,username(=user id),nickname(=alias)
+     * 중복이면 true , 아니면 false
+     */
+    boolean existsByEmail(String email);
+    boolean existsByUsername(String username);
+    boolean existsByNickname(String nickname);
+}
+```
 	
 controller	
 ```java
@@ -716,12 +733,163 @@ controller
     }
 ```
 
+mustache
+```mustache
+        <form action="/auth/joinProcedure" method="post">
+            <input type="hidden" name="_csrf" value="{{_csrf.token}}"/> //mutache는 csrf token을 제공해주지 않아 직접 제공
+            <div class="form-group">
+                <label>아이디</label>
+                <input type="text" class="form-control" name="username"  value="{{#userDto}}{{userDto.username}}{{/userDto}}"  placeholder="아이디를 입력하세요">
+                {{#valid_username}} <span id="valid">{{valid_username}}</span> {{/valid_username}} //아이디가 이미 있는 경우 에러를 뛰움(=이미 사용중인 아이디입니다.)
+            </div>
+            <div class="form-group">
+                <label>비밀번호</label>
+                <input type="text" class="form-control" name="password"  value="{{#userDto}}{{userDto.password}}{{/userDto}}"  placeholder="비밀번호를 입력하세요">
+                {{#valid_password}} <span id="valid">{{valid_password}}</span> {{/valid_password}} // 비밀번호 양식에 맞지 않으면 조건을 뛰움
+
+            </div>
+            <div class="form-group">
+                <label>닉네임</label>
+                <input type="text" class="form-control" name="nickname"  value="{{#userDto}}{{userDto.nickname}}{{/userDto}}"  placeholder="닉네임을 입력하세요">
+                {{#valid_nickname}} <span id="valid">{{valid_nickname}}</span> {{/valid_nickname}} // 닉네임이 이미 있는 경우 에러를 뛰움(=이미 사용중인 닉네임 입니다.)
+
+            </div>
+            <div class="form-group">
+                <label>이메일</label>
+                <input type="text" class="form-control" name="email"  value="{{#userDto}}{{userDto.email}}{{/userDto}}"   placeholder="이메일을 입력하세요">
+                {{#valid_email}} <span id="valid">{{valid_email}}</span> {{/valid_email}} // 이메일이 이미 있는 경우 에러를 뛰움(=이미 사용중인 이메일 입니다.)
+            </div>
+            <a href="/" role="button" class="btn btn-info">나가기</a>
+            <button class="btn btn-primary" >회원 가입</button>
+        </form>
+```
+
 회원가입 중복검사 및 유효성 검사
 
 ![회원가입 form](https://user-images.githubusercontent.com/74132326/236388055-25cba6e6-2b4c-406f-8a37-ce6598c083d5.jpg)
-    
+   
     
 </details>
+	
+	
+**6. 로그인**
+	
+<details>
+	<summary>로그인</summary>
+
+login securityconfig 
+```java
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        return http
+                .csrf().ignoringAntMatchers("/api/**")
+                .and()
+                .authorizeRequests()
+                .antMatchers("/auth/**","/posts/view/**","/posts/search/**").permitAll()
+                .anyRequest().authenticated()
+                .and()
+                .formLogin()
+                .loginPage("/auth/login")
+                .loginProcessingUrl("/auth/loginProcedure")
+                .failureHandler(authenticationFailureHandler)
+                .defaultSuccessUrl("/")
+                .and()
+                .logout()
+                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                .invalidateHttpSession(true).deleteCookies("JSESSIONID")
+                .logoutSuccessUrl("/")
+```
+
+mustache
+```mustache
+        <form action="/auth/loginProcedure" method="post">
+            <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
+            <div class="form-group">
+                <label>아이디</label>
+                <input type="text" class="form-control" name="username" placeholder="아이디를 입력해주세요">
+            </div>
+            <div class="form-group">
+                <label>비밀번호</label>
+                <input type="text" class="form-control" name="password" placeholder="비밀번호를 입력해주세요">
+            </div>
+            <span>
+                {{#error}}
+                    <p id="valid" class="alert alert-danger">{{exception}}</p>
+                {{/error}}
+            </span>
+            <button class="btn btn-primary">로그인</button>
+        </form>	
+```
+
+로그인 화면
+![login form](https://user-images.githubusercontent.com/74132326/236448628-8b0a1860-4987-4b72-bb59-57a98bd636b5.jpg)
+	
+로그인 하고 나서
+![login after](https://user-images.githubusercontent.com/74132326/236448644-bc6f61a6-fc47-4302-8d90-8849602ad46e.jpg)
+
+
+</details>
+	
+**7. 회원 수정**
+
+<details>
+	<summary>회원 수정</summary>
+
+service
+```java
+    public void userUpdate(String nickname, String password){
+        this.nickname=nickname;
+        this.password=password;  //dirty checking 변경 감지
+    }
+```
+service	
+```
+    @Transactional
+    public void userUpdate(UserRequestDto dto) {
+        User user = userRepository.findById(dto.toEntity().getId())
+                .orElseThrow(() -> new IllegalArgumentException("해당 회원이 존재하지 않습니다."));
+
+        user.userUpdate(dto.getNickname(), passwordEncoder.encode(dto.getPassword()));
+
+    }
+```
+	
+controller
+```java
+    @GetMapping("/userUpdate")
+    public String userUpdate(@LoginUser UserResponseDto user,Model model){
+        if(user!=null){
+            model.addAttribute("users",user);
+
+        }
+        return "users/userUpdate";
+    }
+```
+
+api controller
+```java
+    @PutMapping("/api/v1/users")
+    public ResponseEntity<String> userUpdate(@RequestBody UserRequestDto dto) {
+        userService.userUpdate(dto);
+        Authentication authentication = authenticationManager.authenticate( 
+                new UsernamePasswordAuthenticationToken(dto.getUsername(), dto.getPassword()));
+
+        SecurityContextHolder.getContext().setAuthentication(authentication); /authentication provider에 전달된 정보를 인증하여 securitycontextholder에 담아서 실행
+
+        return new ResponseEntity<>("success", HttpStatus.OK);
+    }
+```
+	
+회원정보 수정
+![user update form](https://user-images.githubusercontent.com/74132326/236451335-dcc313ca-8016-4bbe-9958-59eed4b674ca.jpg)
+	
+hyun2였던 닉네임을 devchyun으로 수정
+![update user](https://user-images.githubusercontent.com/74132326/236451625-13145242-e45c-4a10-b20c-70640c2fcf48.jpg)
+
+
+	
+</details>
+	
     
 
 
