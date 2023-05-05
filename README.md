@@ -9,7 +9,7 @@
 
 **[구조 및 설계](#구조-및-설계)**
 
-**실행 화면**
+**실행 화면(#실행-화면)**
 
 **보완해야 할 점과 느낀점**
 
@@ -209,6 +209,8 @@ src
 | `/api/v1/posts/{id}/comments` | `POST` | 댓글 등록 |
 | `/api/v1/posts/{id}/comments/{commentId}` | `PUT` | 댓글 수정 |
 | `/api/v1/posts/{id}/comments/{commentId}` | `DELETE` | 댓글 삭제 |
+
+# 실행 화면
 
     
 
