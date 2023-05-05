@@ -73,6 +73,8 @@
 
 ![comments 테이블](https://user-images.githubusercontent.com/74132326/236364663-ca29944b-7d1c-41a7-bfba-f4eaf369eaac.jpg)
 
+**2. API **
+
 
 
 
