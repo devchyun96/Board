@@ -3,7 +3,7 @@
 
 
 # 목차
-**[프로젝트 소개](https://github.com/devchyun96/Board/edit/master/README.md#프로젝트소개heading)**
+**[프로젝트](https://github.com/devchyun96/Board/edit/master/README.md#프로젝트heading)**
 
 **사용 기술**
 
@@ -17,7 +17,7 @@
 
 
 
-# 프로젝트 소개
+# 프로젝트
 **1. 프로젝트 기간 :2023/04/09~2023/05/04** 
 
 
