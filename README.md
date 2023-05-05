@@ -237,8 +237,8 @@ src
 ```
 
 ![page and search](https://user-images.githubusercontent.com/74132326/236385858-8326f124-0d36-4f20-8261-67a44f8419d0.jpg)
-	
-	
+
+search
 ```mustache
 <form action="/posts/search" method="GET" class="form-inline p-2 bd-highlight" role="search">
     <div class="input-group mb-3">
@@ -248,7 +248,7 @@ src
 </form>
 ```	
     
- 게시판 조회 방식 
+ repository
  ```java 
     public List<Posts> findAllDesc() {
         return queryFactory // queryDsl을 사용
@@ -270,7 +270,7 @@ Service
 ```
 	
 
- 페이징이 더해진 index 조회 동작방식
+controller
  ```java
     @GetMapping("/")
     public String index(Model model,
@@ -352,7 +352,7 @@ repository
 ```java
  Page<Posts> findByTitleContaining(String keyword, Pageable pageable); 
 ```
-
+controller
 ```java
     @GetMapping("/posts/search")
     public String searchKeyword(String keyword,Model model,
@@ -392,6 +392,61 @@ repository
 게시글 등록 창 
 ![게시글 등록 창](https://user-images.githubusercontent.com/74132326/236386043-da25f551-b3b8-4b00-8a2f-5cd5977052a8.jpg)
 
+mustache
+```mustache
+<div class="col-md-12">
+    <div class="container col-md-8">
+        <form>
+            <div class="form-group">
+                <label for="title">제목</label>
+                <input type="text" class="form-control" id="title" placeholder="제목을 입력하세요">
+            </div>
+            <input type="text" class="form-control" id="author" value="{{users.nickname}}"> 
+            <div class="form-group">
+                <label for="content"> 내용 </label>
+                <textarea class="form-control" id="content" placeholder="내용을 입력하세요"></textarea>
+            </div>
+        </form>
+        <a href="/" role="button" class="btn btn-secondary float-right">취소</a>
+        <button type="button" id="btn-save" class="btn btn-primary float-right"  aria-pressed="true">등록</button>
+    </div>
+</div>
+```
+
+service	
+```java
+    @Transactional
+    public Long save(String nickname,PostsSaveDto dto){
+        User user=userRepository.findByNickname(nickname);
+        dto.setUser(user); //user 정보를 set 
+
+        Posts posts=dto.toEntity(); //받은 정보를 posts에 저장
+        postsRepository.save(posts); // persist 
+
+        return posts.getId();
+    }
+```
+
+controller
+```java
+    @GetMapping("/posts/save")
+    public String postsSave(@LoginUser UserResponseDto user,Model model) {
+        if(user != null) {
+            model.addAttribute("users", user);
+        }
+        return "posts/postsSave";
+    }
+```
+
+api controller
+```java
+    @PostMapping("/api/v1/posts")
+    public ResponseEntity save(@RequestBody PostsSaveDto requestDto, @LoginUser UserResponseDto dto) {
+        return ResponseEntity.ok(postsService.save(dto.getNickname(), requestDto)); //ok(200 code) 등록에 성공할 시  
+    }
+```
+
+
 등록 버튼을 누르고 정상적일 때 나오는 alert
 
 ![등록 버튼을 누른 후](https://user-images.githubusercontent.com/74132326/236386135-9f63b100-abb0-43bf-871e-e4f0babf54fc.jpg)
@@ -402,7 +457,60 @@ repository
 링크를 타고 들어가면 나오는 게시글 view 
 
 ![게시글 view](https://user-images.githubusercontent.com/74132326/236386593-fb2c7635-c558-4b64-9b1d-20df507672c8.jpg)
-    
+
+mustache
+```mustache
+            <div class="form-group">
+                <label for="id">글 번호 : {{post.id}}</label>
+                <input type="text" class="form-control" id="id" value="{{post.id}}" readonly>
+            </div>
+            <div class="form-group">
+                <label for="title">제목</label>
+                <input type="text" class="form-control" id="title" value="{{post.title}}" readonly>
+            </div>
+            <div class="form-group">
+                <label for="author"> 작성자 : {{post.author}} </label>
+                <input type="text" class="form-control" id="author" value="{{post.author}}" readonly>
+            </div>
+            <div class="form-group">
+                <label for="content"> 내용 </label>
+                <textarea class="form-control" id="content" readonly>{{post.content}}</textarea>
+            </div>
+	{{#users}} 
+            <a href="/" role="button" class="btn btn-secondary">글 목록</a>
+            {{#author}}
+                <a href="/posts/update/{{post.id}}" role="button" class="btn btn-primary">수정</a> 
+                <button type="button" onclick="" class="btn btn-danger" id="btn-delete">삭제</button>
+            {{/author}}
+        {{/users}}
+```
+
+js
+```js
+        $('#btn-save').on('click', function () {
+            _this.save();
+        });
+	save : function () {
+        const data = {
+            title: $('#title').val(),
+            author: $('#author').val(),
+            content: $('#content').val(),
+        };
+
+        $.ajax({
+            type: 'POST',
+            url: '/api/v1/posts',
+            dataType: 'json',
+            contentType:'application/json; charset=utf-8',
+            data: JSON.stringify(data)
+        }).done(function() {
+            alert('글이 등록되었습니다.');
+            window.location.href = '/';
+        }).fail(function (error) {
+            alert(JSON.stringify(error));
+        });
+    }
+```
  </details>
 
 
@@ -412,6 +520,89 @@ repository
 <summary>게시글 수정</summary>
 
 게시글 수정
+	
+entity
+```java
+    public void update(String title,String content){
+        this.title=title;
+        this.content=content;         //변경감지(dirty checking)
+    }
+```
+
+service
+```java
+    @Transactional
+    public Long update(Long id,PostsUpdateDto dto) {
+        Posts posts = postsRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다 id=" + id));
+        posts.update(dto.getTitle(),dto.getContent()); 
+        return id;
+    }
+```
+
+controller
+```java
+    @GetMapping("/posts/update/{id}")
+    public String postsUpdate(@PathVariable Long id, Model model,
+                              @LoginUser UserResponseDto user) {
+        PostsResponseDto dto=postsService.findById(id);
+        if(user!=null){
+            model.addAttribute("users",user);
+        }
+        model.addAttribute("post",dto);
+
+        return "posts/postsUpdate";
+    }
+```
+
+api controller
+```java
+    @PutMapping("/api/v1/posts/{id}")
+    public Long update(@PathVariable Long id, @RequestBody PostsUpdateDto requestDto) {
+        return postsService.update(id,requestDto);
+    }
+```
+
+js
+```js
+    $('#btn-update').on('click', function () {
+        _this.update();
+    });
+	'
+	'
+	'
+	update : function () {
+
+        const data = {
+            id: $('#id').val(),
+            title: $('#title').val(),
+            content: $('#content').val()
+        };
+
+
+        const check=confirm("글을 수정합니다.");
+        if(check===true){
+           if (!data.title || data.title.trim() === "" || !data.content || data.content.trim() === "") {
+                      alert("입력되지 않았습니다.");
+                      return false;
+        }
+        else{
+        $.ajax({
+            type: 'PUT',
+            url: '/api/v1/posts/'+data.id,
+            dataType: 'json',
+            contentType:'application/json; charset=utf-8',
+            data: JSON.stringify(data)
+        }).done(function() {
+            alert('글이 수정되었습니다.');
+            window.location.href = '/posts/view/' + data.id;
+        }).fail(function (error) {
+            alert(JSON.stringify(error));
+        });
+        }
+      }
+    }
+```
 
 ![게시글 update](https://user-images.githubusercontent.com/74132326/236386735-6ca238f2-f10f-4fce-9b65-91ca5abd11a4.jpg)
 
@@ -427,7 +618,47 @@ repository
 <summary>게시글 삭제</summary>
 
 게시글 삭제 
-    
+	
+service
+```java
+    @Transactional
+    public void delete(Long id) {
+        Posts posts = postsRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다 id=" + id));
+        postsRepository.delete(posts);
+    }
+```
+
+api controller
+```java
+    @DeleteMapping("/api/v1/posts/{id}")
+    public Long delete(@PathVariable Long id) {
+        postsService.delete(id);
+        return id;
+    }
+```
+	
+js
+```js
+    $('#btn-delete').on('click', function () {
+        _this.delete();
+    });
+    delete : function () {
+        const id = $('#id').val();
+
+        $.ajax({
+            type: 'DELETE',
+            url: '/api/v1/posts/'+id,
+            dataType: 'json',
+            contentType:'application/json; charset=utf-8'
+        }).done(function() {
+            alert('글이 삭제되었습니다.');
+            window.location.href = '/';
+        }).fail(function (error) {
+            alert(JSON.stringify(error));
+        });
+    }
+```
 ![게시글 delete](https://user-images.githubusercontent.com/74132326/236387575-d8d23251-0fdf-424f-a568-382468bc2c82.jpg)
 
 게시글 삭제 후 게시판
@@ -440,6 +671,50 @@ repository
 
 <details>
     <summary>회원가입 </summary>
+
+service
+```java
+    @Transactional
+    public void userJoin(UserRequestDto dto) {
+        dto.setPassword(passwordEncoder.encode(dto.getPassword())); //BCryptoEncoder를 사용해 비밀번호 암호화
+        userRepository.save(dto.toEntity());
+    }
+
+    @Transactional(readOnly = true)
+    public Map<String, String> validateHandling(Errors errors) {
+        Map<String,String> validate=new HashMap<>(); 
+
+        for (FieldError error : errors.getFieldErrors()) {
+            String validKey=String.format("valid_%s",error.getField()); //해쉬 맵에 에러메세지와 에러 정보 저장
+            validate.put(validKey,error.getDefaultMessage());
+
+        }
+        return validate;
+    }
+```
+	
+	
+controller	
+```java
+    @GetMapping("/auth/join")
+    public String join() {
+        return "users/userJoin";
+    }
+	
+    @PostMapping("/auth/joinProcedure")
+    public String joinProcedure(@Valid UserRequestDto dto, Errors errors, Model model) {
+        if(errors.hasErrors()){ //만약 에러가 있을 경우 회원가입 페이지에 에러 정보를 뛰움
+            model.addAttribute("userDto",dto);
+            Map<String,String> validate=userService.validateHandling(errors); 
+            for (String key : validate.keySet()) {
+                model.addAttribute(key,validate.get(key)); 
+            }
+            return "users/userJoin";
+        }
+        userService.userJoin(dto);
+        return "redirect:/auth/login"; // 회원가입이 된 경우 로그인 페이지로 
+    }
+```
 
 회원가입 중복검사 및 유효성 검사
 
