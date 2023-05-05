@@ -212,6 +212,101 @@ src
 
 # 실행 부분
 
+    
+**1. 게시판 화면**
+
+<details>
+<summary>게시판 화면</summary>
+
+![navbar](https://user-images.githubusercontent.com/74132326/236385833-f3a3e1b2-948b-4fd1-8770-715044513c6f.jpg)
+
+![table](https://user-images.githubusercontent.com/74132326/236385849-284f571a-2a41-4c93-bec8-b5e2c8283604.jpg)
+
+![page and search](https://user-images.githubusercontent.com/74132326/236385858-8326f124-0d36-4f20-8261-67a44f8419d0.jpg)
+    
+</details>    
+
+**2. 게시글 등록**
+
+<details>
+<summary>게시글 등록</summary>
+
+
+게시글 등록 창 
+![게시글 등록 창](https://user-images.githubusercontent.com/74132326/236386043-da25f551-b3b8-4b00-8a2f-5cd5977052a8.jpg)
+
+등록 버튼을 누르고 정상적일 때 나오는 alert
+
+![등록 버튼을 누른 후](https://user-images.githubusercontent.com/74132326/236386135-9f63b100-abb0-43bf-871e-e4f0babf54fc.jpg)
+
+게시글이 등록 완료되어 테이블에 추가
+![게시글 등록 완료](https://user-images.githubusercontent.com/74132326/236386440-42494daf-02f6-4ab1-86cb-af678cc29fe9.jpg)
+
+링크를 타고 들어가면 나오는 게시글 view 
+
+![게시글 view](https://user-images.githubusercontent.com/74132326/236386593-fb2c7635-c558-4b64-9b1d-20df507672c8.jpg)
+    
+ </details>
+
+
+**3. 게시글 수정**
+
+<details>
+<summary>게시글 수정</summary>
+
+게시글 수정
+
+![게시글 update](https://user-images.githubusercontent.com/74132326/236386735-6ca238f2-f10f-4fce-9b65-91ca5abd11a4.jpg)
+
+게시글 수정 후 
+
+![게시글 update 후](https://user-images.githubusercontent.com/74132326/236386875-b09f6674-085c-4b38-becf-de05481b162d.jpg)
+    
+</details>
+
+**4. 게시글 삭제**
+
+<details>
+<summary>게시글 삭제</summary>
+
+게시글 삭제 
+    
+![게시글 delete](https://user-images.githubusercontent.com/74132326/236387575-d8d23251-0fdf-424f-a568-382468bc2c82.jpg)
+
+게시글 삭제 후 게시판
+    
+![게시글 delete 완료](https://user-images.githubusercontent.com/74132326/236387624-1258b453-b583-48e3-b70f-a41a8e9fc01a.jpg)
+
+</details>
+
+**5. 회원가입**
+
+<details>
+    <summary>회원가입 </summary>
+
+회원가입 중복검사 및 유효성 검사
+
+![회원가입 form](https://user-images.githubusercontent.com/74132326/236388055-25cba6e6-2b4c-406f-8a37-ce6598c083d5.jpg)
+    
+    
+</details>
+    
+
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
 
     
 
