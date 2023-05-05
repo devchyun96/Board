@@ -222,6 +222,21 @@ src
  
 ![table](https://user-images.githubusercontent.com/74132326/236385849-284f571a-2a41-4c93-bec8-b5e2c8283604.jpg)
 
+	
+	
+```mustache
+    {{#posts}}
+    <tr>
+        <td>{{id}}</td>
+        <td><a href="/posts/view/{{id}}">{{title}}</a></td>
+        <td>{{author}}</td>
+        <td>{{view}}</td>
+        <td>{{recommend}}</td>
+        <td>{{createdDate}}</td>
+    </tr>
+    {{/posts}}
+```
+
 ![page and search](https://user-images.githubusercontent.com/74132326/236385858-8326f124-0d36-4f20-8261-67a44f8419d0.jpg)
     
  게시판 조회 방식 
@@ -233,6 +248,18 @@ src
                 .fetch();
     }
  ```  
+
+Service	
+```java
+    @Transactional(readOnly = true)
+    public List<PostsListDto> findAllDesc() {
+        return postsRepository.findAllDesc()
+                .stream()
+                .map(PostsListDto::new)
+                .collect(Collectors.toList()); //lambda 사용
+    }
+```
+	
 
  페이징이 더해진 index 조회 동작방식
  ```java
@@ -253,12 +280,96 @@ src
         return "index";
     }
 ```
+	
+mustache
+```mustache
+<nav aria-label="Page navigation ">
+    <ul class="pagination justify-content-center">
+	{{! 전 페이지가 있을 경우}}
+        {{#hasPrev}}
+            <li class="page-item">
+                <a class="page-link" href="?page={{prev}}">
+                <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+        {{/hasPrev}}
+	{{! 전 페이지가 없는 경우}}
+        {{^hasPrev}}
+            <li class="page-item disabled"> //사용하지 못하게 막음
+                <a class="page-link" href="?page={{prev}}">
+                <span aria-hidden="true" >&laquo;</span>
+                </a>
+            </li>
+        {{/hasPrev}}
+	{{! 현재 페이지의 넘버 }}    
+        <li class="page-item disabled"> 
+            <a class="page-link" href="?page={{currentPage}}">{{currentPage}}</a> 
+        </li>
+	{{! 다음 페이지가 있는 경우}}
+        {{#hasNext}}
+            <li class="page-item">
+                <a class="page-link" href="?page={{next}}">
+                <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        {{/hasNext}}
+	{{ ! 다음 페이지가 없는 경우}}
+        {{^hasNext}}
+            <li class="page-item disabled" > // 사용하지 못하게 막음
+                <a class="page-link" href="?page={{next}}">
+                <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        {{/hasNext}}
+    </ul>
+</nav>
+```
     
 ![페이징 된 페이지](https://user-images.githubusercontent.com/74132326/236422673-fc15a1e9-fb45-4d30-b81b-6a1efabe8967.jpg)
     
 ![페이징 된 페이지2](https://user-images.githubusercontent.com/74132326/236422705-4337bdbf-aea8-4175-bac2-c019c9358219.jpg)
 
 게시판이 내림차순으로 넘어가 2페이지에 글제목 1과 2가 있는것을 알 수 있다 
+	
+service
+```java	
+    @Transactional(readOnly = true)
+    public Page<Posts> searchKeyword(String keyword,Pageable pageable){
+        Page<Posts> page = postsRepository.findByTitleContaining(keyword, pageable); // jpa리포지토리의 containing(=%like) 키워드 사용 
+        return page;
+    }
+```
+repository
+```java
+ Page<Posts> findByTitleContaining(String keyword, Pageable pageable); 
+```
+
+```java
+    @GetMapping("/posts/search")
+    public String searchKeyword(String keyword,Model model,
+                                @PageableDefault(sort = "id",direction =Sort.Direction.DESC )Pageable pageable,
+                                @LoginUser UserResponseDto user) {
+        Page<Posts> page = postsService.searchKeyword(keyword,pageable); //keyword에 따라 검색되는 내용이 바뀌고 검색내용도 페이징
+        if(user != null) {
+            model.addAttribute("users", user);
+        }
+        model.addAttribute("search",page);  // 검색된 내용을 페이징하여 
+        model.addAttribute("keyword",keyword); //keyword의 정보
+        model.addAttribute("prev",pageable.previousOrFirst().getPageNumber());
+        model.addAttribute("next",pageable.next().getPageNumber());
+        model.addAttribute("hasNext",page.hasNext());
+        model.addAttribute("hasPrev",page.hasPrevious());
+        model.addAttribute("currentPage",pageable.getPageNumber()+1);
+        return "posts/postsSearch";
+    }
+
+```
+	
+![페이지 검색](https://user-images.githubusercontent.com/74132326/236425974-5487c543-267f-41fa-b545-de5410c42f02.jpg)
+
+검색창에 5를 검색해 나온 결과 5가붙어있는 제목이 나오는 것을 알 수 있다
+	
+
     
 </details>    
 
