@@ -219,12 +219,49 @@ src
 <summary>게시판 화면</summary>
 
 ![navbar](https://user-images.githubusercontent.com/74132326/236385833-f3a3e1b2-948b-4fd1-8770-715044513c6f.jpg)
-
+ 
 ![table](https://user-images.githubusercontent.com/74132326/236385849-284f571a-2a41-4c93-bec8-b5e2c8283604.jpg)
 
 ![page and search](https://user-images.githubusercontent.com/74132326/236385858-8326f124-0d36-4f20-8261-67a44f8419d0.jpg)
     
+ 게시판 조회 방식 
+ ```java 
+    public List<Posts> findAllDesc() {
+        return queryFactory // queryDsl을 사용
+                .selectFrom(posts)
+                .orderBy(posts.id.desc()) //orderBy 조건절에 id 내림차순으로 조회
+                .fetch();
+    }
+ ```  
+
+ 페이징이 더해진 index 조회 동작방식
+ ```java
+    @GetMapping("/")
+    public String index(Model model,
+                        @PageableDefault(size=10,sort="id",direction = Sort.Direction.DESC)Pageable pageable,
+                        @LoginUser UserResponseDto user) {
+        Page<Posts> posts=postsService.page(pageable);
+        if(user != null) {
+	        model.addAttribute("users", user); // user가 있을 경우 user의 로그인 정보를 불러옴
+        }
+        model.addAttribute("posts", posts); //페이징 된 게시글을 불러옴 
+        model.addAttribute("prev", pageable.previousOrFirst().getPageNumber()); //전 페이지의 숫자를 불러옴
+        model.addAttribute("next", pageable.next().getPageNumber()); //다음 페이지의 숫자를 불러옴
+        model.addAttribute("hasNext", posts.hasNext()); // 다음 페이지가 있는 경우
+        model.addAttribute("hasPrev", posts.hasPrevious()); // 전 페이지가 있는 경우
+        model.addAttribute("currentPage", pageable.getPageNumber()+1); // 페이지는 0부터 시작하기 때문에 +1
+        return "index";
+    }
+```
+    
+![페이징 된 페이지](https://user-images.githubusercontent.com/74132326/236422673-fc15a1e9-fb45-4d30-b81b-6a1efabe8967.jpg)
+    
+![페이징 된 페이지2](https://user-images.githubusercontent.com/74132326/236422705-4337bdbf-aea8-4175-bac2-c019c9358219.jpg)
+
+게시판이 내림차순으로 넘어가 2페이지에 글제목 1과 2가 있는것을 알 수 있다 
+    
 </details>    
+
 
 **2. 게시글 등록**
 
