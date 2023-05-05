@@ -63,9 +63,17 @@
     
     
 # 구조
-**1. DB 구조**
+**1. DB 구조 및 설계**
 
 ![스키마 다이어그램](https://user-images.githubusercontent.com/74132326/236361155-83dd5b31-9c2d-4032-a8e9-ddf792540402.jpg)
+
+![posts 테이블](https://user-images.githubusercontent.com/74132326/236364642-88e42b3e-d019-463a-aed6-6765cab7c653.jpg)
+
+![users 테이블](https://user-images.githubusercontent.com/74132326/236364657-586597da-5955-43a9-80fd-a5cd2bde7acc.jpg)
+
+![comments 테이블](https://user-images.githubusercontent.com/74132326/236364663-ca29944b-7d1c-41a7-bfba-f4eaf369eaac.jpg)
+
+
 
 
 
