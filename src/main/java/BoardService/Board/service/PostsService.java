@@ -14,7 +14,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -68,6 +72,11 @@ public class PostsService {
     @Transactional
     public int updateView(Long id){
         return postsRepository.updateView(id);
+    }
+
+    @Transactional
+    public int updateRecommend(Long id,HttpServletRequest request,HttpServletResponse response){
+        return postsRepository.updateRecommend(id);
     }
 
     @Transactional(readOnly = true)

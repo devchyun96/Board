@@ -18,6 +18,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @Controller
@@ -63,7 +66,8 @@ public class PostsIndexController {
     }
 
     @GetMapping("/posts/view/{id}")
-    public String postsView(@PathVariable Long id,Model model,@LoginUser UserResponseDto user) {
+    public String postsView(@PathVariable Long id,Model model,@LoginUser UserResponseDto user,
+                            HttpServletRequest request, HttpServletResponse response) {
         PostsResponseDto dto=postsService.findById(id);
         List<CommentResponseDto> comments=dto.getComments();
 
@@ -103,5 +107,4 @@ public class PostsIndexController {
         model.addAttribute("currentPage",pageable.getPageNumber()+1);
         return "posts/postsSearch";
     }
-
 }
