@@ -44,7 +44,7 @@
     
     build : Gradle 7.6.2
     
-    Database : h2database 2.1.214 / jdbc 
+    Database : h2database 2.1.214 / jdbc / MySQL 8.0.31 community
     
     
     
