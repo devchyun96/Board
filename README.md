@@ -64,6 +64,76 @@
     
 # 구조 및 설계
 **1. 패키지 설계**
+```
+src
+├─└main
+│──└java
+│────└BoardService
+│────────└ board
+│───────────├ config 
+│───────────│──└JpaConfig        
+│───────────├ controller
+│───────────│──├ CommentApiContoller
+│───────────│──├ PostsApiController
+│───────────│──├ PostsIndexController
+│───────────│──├ UserApiController
+│───────────│──└ UserIndexController
+│───────────├ domain
+│───────────│──├ BaseTimeEntity
+│───────────│──├ Comment
+│───────────│──├ Posts
+│───────────│──├ Role
+│───────────│──└ User
+│───────────├ dto
+│───────────│─── commentdto
+│───────────│────├ CommentRequestDto
+│───────────│────└ CommentResponseDto
+│───────────│─── postsdto
+│───────────│────├ PostsListDto
+│───────────│────├ PostsResponseDto
+│───────────│────├ PostsSaveDto
+│───────────│────└ PostsUpdateDto
+│───────────│─── userdto
+│───────────│────├ UserRequestDto
+│───────────│────└ UserResponseDto
+│───────────├ repository
+│───────────│─── commentrespository
+│───────────│────└ CommentRepository
+│───────────│─── postsrepository
+│───────────│────├ PostsRepository
+│───────────│────├ PostsRepositoryCustom
+│───────────│────└ PostsRepositoryCustomImpl
+│───────────│─── userrepository
+│───────────│────└ UserRepository
+│───────────├ security
+│───────────│─── auth
+│───────────│────├ CustomAuthFailHandler
+│───────────│────├ CustomUserDetails
+│───────────│────├ CustomUserDetailService
+│───────────│────├ LoginUser
+│───────────│────└ LoginUserArgumentResolver
+│───────────│─── config
+│───────────│────├ SecurityConfig
+│───────────│────└ WebConfig
+│───────────│─── oauth
+│───────────│────├ CustomOAuth2UserService
+│───────────│────└ OAuthAttributes
+│───────────│─── validator
+│───────────│────├ AbstractValidator
+│───────────│────├ EmailValidate
+│───────────│────├ NicknameValidate
+│───────────│────└ UsernameValidate
+
+
+
+
+
+
+
+
+
+```
+
 
 **2. DB 구조 및 설계**
 
