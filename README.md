@@ -891,11 +891,62 @@ api controller
         Authentication authentication = authenticationManager.authenticate( 
                 new UsernamePasswordAuthenticationToken(dto.getUsername(), dto.getPassword()));
 
-        SecurityContextHolder.getContext().setAuthentication(authentication); /authentication provider에 전달된 정보를 인증하여 securitycontextholder에 담아서 실행
+        SecurityContextHolder.getContext().setAuthentication(authentication); /authentication provider에 전달된 정보를 인증하여 securitycontextholder에 담아서 전달
 
         return new ResponseEntity<>("success", HttpStatus.OK);
     }
 ```
+js	
+```js
+        $('#btn-userUpdate').on('click', function(){
+            _this.userUpdate();
+        });
+    userUpdate : function() {
+        const data={
+            id: $('#id').val(),
+            username: $('#username').val(),
+            nickname: $('#nickname').val(),
+            password: $('#password').val(),
+            modifiedDate: $('#modifiedDate').val()
+        }
+
+        if(!data.nickname || data.nickname.trim() === "" || !data.password || data.password.trim() === "") {
+            alert("공백 또는 입력하지 않은 부분이 있습니다.");
+            return false;
+        } else if(!/(?=.*[0-9])(?=.*[a-zA-Z])(?=.*\W)(?=\S+$).{8,16}/.test(data.password)) {
+            alert("비밀번호는 8~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요.");
+            $('#password').focus();
+            return false;
+        } else if(!/^[ㄱ-ㅎ가-힣a-z0-9-_]{2,10}$/.test(data.nickname)) {
+            alert("닉네임은 특수문자를 제외한 2~10자리여야 합니다.");
+            $('#nickname').focus();
+            return false;
+        }
+        const check= confirm("회원정보를 수정합니다.");
+        if(check===true){
+            $.ajax({
+                type : "PUT",
+                url : "/api/v1/users",
+                contentType : 'application/json; charset=utf-8',
+                data : JSON.stringify(data)
+            }).done(function(){
+                alert("수정을 완료했습니다.");
+                window.location.href= "/";
+
+            }).fail(function (error) {
+               if (error.status === 500) {
+                        alert("이미 사용중인 닉네임 입니다.");
+                        $('#nickname').focus();
+               }else{
+                    alert(JSON.stringify(error));
+               }
+            });
+        } else{
+            return false;
+        }
+    }
+```
+
 	
 회원정보 수정
 ![user update form](https://user-images.githubusercontent.com/74132326/236451335-dcc313ca-8016-4bbe-9958-59eed4b674ca.jpg)
@@ -903,6 +954,131 @@ api controller
 hyun2였던 닉네임을 devchyun으로 수정
 ![update user](https://user-images.githubusercontent.com/74132326/236451625-13145242-e45c-4a10-b20c-70640c2fcf48.jpg)
 
+</details>
+	
+**8. 댓글 등록**
+	
+<details>
+<summary>댓글 등록</summary>
+
+entity
+```java
+public class Comment{
+
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(columnDefinition = "TEXT", nullable = false)
+    private String comment;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "posts_id")
+    private Posts posts; //posts와 comment 관계의 주인은 comment(comment가 다 posts가 일)
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user; //user와 comment 관계의 주인은 comment(comment가 다 user가 일)
+
+    @CreatedDate
+    @Column(name = "created_date")
+    private String createdDate;
+
+    @LastModifiedDate
+    @Column(name = "modified_Date")
+    private String modifiedDate;
+	
+   }
+```
+	
+service	
+```java
+    @Transactional
+    public Long commentSave(String nickname, Long id, CommentRequestDto dto) {
+        User user=userRepository.findByNickname(nickname); //user repository의 nickname 정보를 가져옴
+        Posts posts=postsRepository.findById(id) //post repository의 id 정보를 가져옴
+                .orElseThrow(()->new IllegalArgumentException("해당 게시글이 존재하지 않습니다" + id));
+
+        dto.setUser(user); // dto에 nickname정보 저장
+        dto.setPosts(posts); // dto에 postsid정보 저장
+        commentRepository.save(dto.toEntity());
+
+        return dto.getId();
+    }
+```
+api controller
+```java
+    @PostMapping("api/v1/posts/{id}/comments") 
+    public ResponseEntity commentSave(@PathVariable Long id
+            , @RequestBody CommentRequestDto dto
+            , @LoginUser UserResponseDto user) {
+        return ResponseEntity.ok(commentService.commentSave(user.getNickname(),id ,dto));
+    }
+```
+
+mustache
+```mustache
+    <div class="card-header">댓글 등록창</div>
+    <form>
+        <input type="hidden" id="postsId" value="{{post.id}}">
+        {{#users}}
+            <div class="card-body">
+                <textarea id="comment" class="form-control" rows="4" placeholder="댓글을 적어주세요"></textarea>
+            </div>
+            <div class="card-footer">
+                <button type="button" id="btn-commentSave" class="btn btn-outline-primary"> 댓글 등록 </button>
+            </div>
+        {{/users}}
+        {{^users}}
+            <div class="card-body" style="font-size: small">
+                <a href="/auth/login">로그인</a> 하시면 댓글을 등록할 수 있습니다. // 댓글 등록은 로그인 한 유저만
+            </div>
+        {{/users}}
+    </form>
+```
+
+js
+```js
+        $('#btn-commentSave').on('click', function () {
+             _this.commentSave();
+        });
+    commentSave : function(){
+        const data={
+            postsId: $('#postsId').val(),
+            comment: $('#comment').val()
+        }
+        if (!data.comment || data.comment.trim() === "") {
+                  alert("공백 또는 입력하지 않은 부분이 있습니다.");
+                  return false;
+        }
+        const check = confirm("등록하시겠습니까?");
+        if (check === true) {
+            $.ajax({
+                type: 'POST',
+                url: '/api/v1/posts/' + data.postsId + '/comments/',
+                dataType: 'text',
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify(data)
+            }).done(function () {
+                alert('댓글을 등록했습니다.');
+                window.location.reload();
+            }).fail(function (error) {
+                alert(JSON.stringify(error));
+            });
+        }
+    }
+```
+	
+댓글 등록 시 로그인
+![commentForm](https://user-images.githubusercontent.com/74132326/236459648-cac679b3-35d6-43fa-bdfe-42401e9d2ed4.jpg)
+
+로그인 후 댓글 등록
+![comment save](https://user-images.githubusercontent.com/74132326/236459975-82862042-bd64-4860-a6f9-5169013903d8.jpg)
+
+댓글 등록 완료
+![댓글 등록 완료](https://user-images.githubusercontent.com/74132326/236460172-5eeb9efc-97fa-4041-b8f6-a6bb503a56da.jpg)
+
+
+	
 </details>
 	
     
