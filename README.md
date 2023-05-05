@@ -1036,6 +1036,7 @@ mustache
     </form>
 ```
 
+
 js
 ```js
         $('#btn-commentSave').on('click', function () {
@@ -1076,10 +1077,102 @@ js
 
 댓글 등록 완료
 ![댓글 등록 완료](https://user-images.githubusercontent.com/74132326/236460172-5eeb9efc-97fa-4041-b8f6-a6bb503a56da.jpg)
-
-
 	
 </details>
+	
+**9. 댓글 수정 및 삭제**
+	
+<details>
+<summary>댓글 수정 및 삭제</summary>	
+
+
+```java
+    public void commentUpdate(String comment){
+        this.comment=comment; //변경감지 
+    }
+```
+	
+mustache
+```mustache
+   <div class="card-header">
+        {{#comments.size}}{{comments.size}}{{/comments.size}} 댓글
+    </div>
+    <ul class="list-group-flush">
+        {{#comments}}
+            <li id="comments-{{id}} "class="list-group-flush">
+                <span>
+                    <span style="font-size: small">{{nickname}}</span>
+                    <span style="font-size: xx-small">{{createdDate}}</span>&nbsp;
+                </span>
+                {{#isAuthor}}
+                <a type="button" data-toggle="collapse" data-target=".multi-collapse-{{id}}"
+                   class="btn btn-primary btn-sm">수정</a> //collapse를 이용하여 수정을 누르면 수정등록창이 나오도록
+                <a type="button" onclick="main.commentDelete({{postsId}},{{id}})"
+                   class="btn btn-danger btn-sm">삭제</a> 
+                {{/isAuthor}}
+                <p class="collapse multi-collapse-{{id}} show">{{comment}}</p>
+                <form class="collapse multi-collapse-{{id}}">
+                    <input type="hidden" id="id" value="{{id}}">
+                    <input type="hidden" id="postsId" value="{{postsId}}">
+                    <input type="hidden" id="authorUserId" value="{{userId}}"> // 저작자와 
+                    <input type="hidden" id="sessionUserId" value="{{#users}}{{users.id}}{{/users}}"> //로그인 유저가 맞을시 수정 가능 
+                    <div class="form-group">
+                        <textarea class="form-control" id="commentContent" rows="3">{{comment}}</textarea>
+                    </div>
+                    <button type="button" id="btn-commentUpdate" class="btn btn-primary">수정</button>
+                </form>
+            </li>
+        {{/comments}}
+    </ul>
+```
+
+service	
+```java
+    @Transactional
+    public void commentUpdate(Long id, CommentRequestDto dto) {
+        Comment comment = commentRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 댓글이 존재하지 않습니다." + id));
+
+        comment.commentUpdate(dto.getComment());
+    }
+    @Transactional
+    public void delete(Long id){
+        Comment comment=commentRepository.findById(id)
+                .orElseThrow(()->new IllegalArgumentException("해당 댓글이 존재하지 않습니다." +id));
+
+        commentRepository.delete(comment);
+    }
+```
+	
+api controller
+```java
+    @PutMapping("api/v1/posts/{id}/comments/{commentId}")
+    public ResponseEntity commentUpdate(@PathVariable Long id
+            , @RequestBody CommentRequestDto dto) {
+        commentService.commentUpdate(id, dto);
+        return ResponseEntity.ok(id);
+    }
+
+    @DeleteMapping("api/v1/posts/{id}/comments/{commentId}")
+    public ResponseEntity commentDelete(@PathVariable Long id) {
+        commentService.delete(id);
+        return ResponseEntity.ok(id);
+    }
+```
+댓글 수정 collapse
+![update comment](https://user-images.githubusercontent.com/74132326/236462949-eec58378-eeaa-4847-bd41-3c4cee215ccd.jpg)
+	
+댓글 수정 완료
+![댓글 수정 완료](https://user-images.githubusercontent.com/74132326/236462972-48def54b-b0c3-41c5-b6a1-dc09def48169.jpg)
+
+댓글 삭제 버튼
+![댓글 삭제 완료](https://user-images.githubusercontent.com/74132326/236463006-eb62ee7d-642b-44f0-926b-18a528c3d71a.jpg)
+
+댓글 삭제가 완료된 게시글의 댓글 창
+![댓글 삭제 완료 후](https://user-images.githubusercontent.com/74132326/236463187-9dea84f7-52f4-477a-a95b-e6bc6ee16278.jpg)
+
+</details>
+	
 	
     
 
