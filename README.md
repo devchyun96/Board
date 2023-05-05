@@ -63,7 +63,10 @@
     
     
 # 구조 및 설계
-**1. 패키지 설계**
+**1. 패키지 구조**
+<details>
+<summary> 패키지 구조 </summary>
+
 ```
 src
 ├─└main
@@ -156,6 +159,8 @@ src
 │──└─ application-oauth.properties
 └ test
 ```
+    
+</details>
 
 
 **2. DB 구조 및 설계**
