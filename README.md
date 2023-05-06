@@ -1200,8 +1200,62 @@ api controller
 게시판의 추천 기능이나 인기글 기능도 만들고 싶기 때문에 계속해서 업로드 할 예정이다.
 	
  만들면서 느낀 점은 오류가 하나 생기면 그것을 고치는 것은 시간이 생각보다 더 많이 든다는 것이다.
-날 가장 괴롭혔던 오류는 머스테치의 no method 문제였다. 알고보면 그저 내가 오탈자를 많이 내거나 데이터 입력을 부정확하게 한 경우가 많았다.
-막상 오류를 해결하면 그렇게 어려운 문제가 아니었다는게 더 충격이었다. 이론과 경험은 커다란 괴리가 있다는 것을 느끼게 해준 프로젝트였다.
+날 가장 괴롭혔던 오류는 BCryptoEncoder의  Encoded password does not look like BCrypt 문제였다. 알고보면 그저 내가 오탈자를 많이 내거나 데이터 입력을 부정확하게 한 경우가 많았다.
+오류를 고쳤던 경험을 이야기 해 보자면, 더티체킹 부분이 있다. DB를 살펴보았을때 자꾸 닉네임 부분에 패스워드가 들어가있고 패스워드 부분에 닉네임이 들어가있었다. 그 이유는 딱 하나였다. 더티체킹의 인자의 자리가 바뀌어있던것이다. 그 때문에 회원의 정보 수정이 불가능했고 그 부분에서 Encoded password does not look like BCrypt 오류가 난 것이었다. 
+
+```java
+    public void userUpdate(String password, String nickname){
+        this.nickname=nickname;
+        this.password=password;
+    }
+```
+
+이 오류를 해결하면서 나도 어이가 없었다. 이런 기본적인 것도 놓칠거라고는 생각 못했기 때문이다. 
+
+가장 구현하기 힘들었던 기능은 security 부분이었다. 공부하던 aws로 혼자 구현하는 웹 서비스 책 에서는 securityConfig에 WebSecurityConfiguerAdapter를 사용하는데 이 부분이 deprecated된 것이 문제였다. security 부분은 처음이라 적용하는 방식이 달라진게 어려웠다. 그리고 결국에 securityFilterChain 방식으로 구현하게 되었다.
+
+그 과정에 authenticationManagerBean을 사용하지 못하게 돼 다른 방식을 찾아보기로 했고, 찾은 방식이 DaoAuthenticationProvider였다.
+	
+![daoauthenticationprovider 작동 방식](https://user-images.githubusercontent.com/74132326/236590355-7962a88a-f01a-436e-97b1-deae46496c40.png)	
+출처 : [spring.io](https://docs.spring.io/spring-security/reference/servlet/authentication/passwords/dao-authentication-provider.html)
+	
+```java
+    @Bean
+    public AuthenticationManager authenticationManager() throws Exception {
+        return new ProviderManager(Arrays.asList(authenticationProvider()));
+    }
+
+    @Bean
+    public DaoAuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+        provider.setUserDetailsService(customUserDetailService);
+        provider.setPasswordEncoder(passwordEncoder());
+        return provider;
+    }
+```
+
+이런 방식으로 AuthenticationManager가 ProviderManager를 통해 유저의 정보와 암호화된 비밀번호를 받아서 토큰화 한다.
+받은 토큰을
+	
+```java
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(dto.getUsername(), dto.getPassword()));
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+```
+SecurityContextHolder를 통해서 수정하기도 하고
+
+```java
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null) {
+            new SecurityContextLogoutHandler().logout(request,response,authentication);
+        }
+``` 
+이런 식으로 로그아웃할때 사용하기도 한다.
+	
+결국에는 Security기능도 정상적으로 돌아갔다.
+
+막상 오류 해결을 하다보면 그렇게 어려운 문제가 아니었다라는걸 깨달았게 되었고, 이론과 경험은 커다란 괴리가 있다는 것을 느끼게 해준 프로젝트였다.
 
 	
 	
