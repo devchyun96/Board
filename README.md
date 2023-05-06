@@ -1200,8 +1200,8 @@ api controller
 게시판의 추천 기능이나 인기글 기능도 만들고 싶기 때문에 계속해서 업로드 할 예정이다.
 	
  만들면서 느낀 점은 오류가 하나 생기면 그것을 고치는 것은 시간이 생각보다 더 많이 든다는 것이다.
-날 가장 괴롭혔던 오류는 머스테치의 no method 문제였다. 알고보면 그저 내가 오탈자를 많이 내거나 데이터 입력을 부정확하게 한 경우가 많았다.
-오류를 고쳤던 경험을 이야기 해 보자면, 더티체킹 부분이 있다. DB를 살펴보았을때 자꾸 닉네임 부분에 패스워드가 들어가있고 패스워드 부분에 닉네임이 들어가있었다. 그 이유는 딱 하나였다. 더티체킹의 인자의 자리가 바뀌어있던것이다. 그 때문에 회원의 정보 수정이 불가능했고 그 부분에서 no method 오류가 난 것이었다. 
+날 가장 괴롭혔던 오류는 BCryptoEncoder의  Encoded password does not look like BCrypt 문제였다. 알고보면 그저 내가 오탈자를 많이 내거나 데이터 입력을 부정확하게 한 경우가 많았다.
+오류를 고쳤던 경험을 이야기 해 보자면, 더티체킹 부분이 있다. DB를 살펴보았을때 자꾸 닉네임 부분에 패스워드가 들어가있고 패스워드 부분에 닉네임이 들어가있었다. 그 이유는 딱 하나였다. 더티체킹의 인자의 자리가 바뀌어있던것이다. 그 때문에 회원의 정보 수정이 불가능했고 그 부분에서 Encoded password does not look like BCrypt 오류가 난 것이었다. 
 
 ```java
     public void userUpdate(String password, String nickname){
@@ -1212,57 +1212,15 @@ api controller
 
 이 오류를 해결하면서 나도 어이가 없었다. 이런 기본적인 것도 놓칠거라고는 생각 못했기 때문이다. 
 
-또 다른 경험을 들어보자면, 댓글의 수정과 삭제를 위한 js를 작성했을 때 게시글 등록이 되지 않았던 것이다.
-그 오류를 고치기 위해 2일간 많은 고민을 하고 여러가지를 찾아보았다. 하지만 정답은 멀지 않은곳에 있었다.
+가장 구현하기 힘들었던 기능은 security 부분이었다. 공부하던 aws로 혼자 구현하는 웹 서비스 책 에서는 securityConfig에 WebSecurityConfiguerAdapter를 사용하는데 이 부분이 deprecated된 것이 문제였다. security 부분은 처음이라 적용하는 방식이 달라진게 어려웠다. 그리고 결국에 securityFilterChain 방식으로 구현하게 되었다.
 
-```mustache
-    commentUpdate: function(form){
-        const data = {
-            commentId: form.querySelector('#id').value,
-            postsId: form.querySelector('#postsId').value,
-            comment: form.querySelector('#commentContent').value,
-            authorUserId: form.querySelector('#authorUserId').value,
-            sessionUserId: form.querySelector('#sessionUserId').value
-        }
-        if(data.authorUserId!==data.sessionUserId){
-            alert("본인이 작성한 댓글만 수정이 가능합니다.")
-            return false;
-        }
-        if (!data.comment || data.comment.trim() === "") {
-            alert("공백 또는 입력하지 않은 부분이 있습니다.");
-            return false;
-        }
-        const con_check = confirm("수정하시겠습니까?");
-        if (con_check === true) {
-            $.ajax({
-                type: 'PUT',
-                url: '/api/v1/posts/' + data.postsId + '/comments/' + data.commentId,
-                dataType: 'JSON',
-                contentType: 'application/json; charset=utf-8',
-                data: JSON.stringify(data)
-            }).done(function () {
-                window.location.reload();
-            }).fail(function (error) {
-                alert(JSON.stringify(error));
-             });
-        }
-    }
-```
+그 과정에 authenticationManagerBean을 사용하지 못하게 돼 다른 방식을 찾아보기로 했고, 찾은 방식이 DaoAuthenticationProvider였다.
 	
-url 부분의 data.commentId가 원래는 data.id였다. 앞에 postsId가 있으니 괜찮을거란 생각을 가지고 위의 데이터 타입처럼 id로 사용한게 화근이었다. 
-
-```java
-    @PutMapping("api/v1/posts/{id}/comments/{id}")
-```
-
-api controller의 mapping 부분인데 posts와 comments 모두 서로의 id를 받는데 js에서 data.id가 comments의 id를 끌고와 게시글 등록을 위한 posts의 id와 충돌을 일으켜 어떤것이 id인지를 모르게 된 것이 원인이었다. 그래서 js에서 data.id 를 data.commentId로 변경해주고 나서 확인해보니 다른 문제가 생겼다.
-
-```
-spring.mvc.pathmatch.matching-strategy=ant_path_matcher
-```
-
-하지만 그것은, properties한줄만 써주면 되는 문제라 정말 쉽게 풀렸다. 이 과정을 거친 후에는 게시글 등록과 댓글 수정 및 삭제가 정상적으로 되는 것을 확인할 수 있었다. 
+![daoauthenticationprovider 작동 방식](https://user-images.githubusercontent.com/74132326/236590355-7962a88a-f01a-436e-97b1-deae46496c40.png)	
+출처 : [spring.io](https://docs.spring.io/spring-security/reference/servlet/authentication/passwords/dao-authentication-provider.html)
 	
+
+
 막상 오류를 해결하면 그렇게 어려운 문제가 아니었다는게 더 충격이었다. 이론과 경험은 커다란 괴리가 있다는 것을 느끼게 해준 프로젝트였다.
 
 	
