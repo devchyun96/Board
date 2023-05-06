@@ -42,7 +42,8 @@ public class Posts extends BaseTimeEntity {
     private List<Comment> comments;
 
     @Builder
-    public Posts( String title, String author, String content, int view, int recommend, User user) {
+    public Posts(Long id, String title, String author, String content, int view, int recommend, User user) {
+        this.id=id;
         this.title = title;
         this.author = author;
         this.content = content;
