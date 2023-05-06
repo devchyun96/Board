@@ -1219,9 +1219,43 @@ api controller
 ![daoauthenticationprovider 작동 방식](https://user-images.githubusercontent.com/74132326/236590355-7962a88a-f01a-436e-97b1-deae46496c40.png)	
 출처 : [spring.io](https://docs.spring.io/spring-security/reference/servlet/authentication/passwords/dao-authentication-provider.html)
 	
+```java
+    @Bean
+    public AuthenticationManager authenticationManager() throws Exception {
+        return new ProviderManager(Arrays.asList(authenticationProvider()));
+    }
 
+    @Bean
+    public DaoAuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+        provider.setUserDetailsService(customUserDetailService);
+        provider.setPasswordEncoder(passwordEncoder());
+        return provider;
+    }
+```
 
-막상 오류를 해결하면 그렇게 어려운 문제가 아니었다는게 더 충격이었다. 이론과 경험은 커다란 괴리가 있다는 것을 느끼게 해준 프로젝트였다.
+이런 방식으로 AuthenticationManager가 ProviderManager를 통해 유저의 정보와 암호화된 비밀번호를 받아서 토큰화 한다.
+받은 토큰을
+	
+```java
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(dto.getUsername(), dto.getPassword()));
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+```
+SecurityContextHolder를 통해서 수정하기도 하고
+
+```java
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null) {
+            new SecurityContextLogoutHandler().logout(request,response,authentication);
+        }
+``` 
+이런 식으로 로그아웃할때 사용하기도 한다.
+	
+결국에는 Security기능도 정상적으로 돌아갔다.
+
+막상 오류 해결을 하다보면 그렇게 어려운 문제가 아니었다라는걸 깨달았게 되었고, 이론과 경험은 커다란 괴리가 있다는 것을 느끼게 해준 프로젝트였다.
 
 	
 	
